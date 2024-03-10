@@ -34,9 +34,12 @@ public class Main{
                     "\n8.Convert a single Entity by Key as a JSON String");
             choice= keyboard.nextInt();
             //THis will run function 1
+            //Author of Function 1 Eoin Hamill
+            //Helped with by Dovydas
             if(choice==1)
             {
-                dao.getAllGames();
+
+                System.out.println(dao.getAllGames());
             }
             if(choice==2)
             {

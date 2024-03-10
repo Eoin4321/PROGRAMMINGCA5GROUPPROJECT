@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DAO {
 
-    private String url = "jdbc:mysql://localhost:3306/";
+    private String url = "jdbc:mysql://localhost/";
     private String dbname = "videogames";
     private String username = "root";
     private String password = "";
@@ -52,12 +52,12 @@ public class DAO {
         while(result.next())
         {
             Game_Information addinggame = new Game_Information();
-            addinggame.setGameId(result.getInt("Game_ID"));
+            addinggame.setGameId(result.getInt("GameId"));
             addinggame.setGame_name(result.getString("Game_name"));
             addinggame.setGame_console(result.getString("Game_console"));
             addinggame.setGame_developer(result.getString("Game_developer"));
             addinggame.setGame_franchise(result.getString("Game_developer"));
-            addinggame.setGame_releasedate(result.getString("releasedate"));
+            addinggame.setGame_releasedate(result.getString("Game_releasedate"));
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
