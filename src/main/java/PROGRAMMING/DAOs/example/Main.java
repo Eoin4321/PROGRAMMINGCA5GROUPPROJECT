@@ -1,4 +1,4 @@
-package org.example;
+package PROGRAMMING.DAOs.example;
 
 public class Main {
     public static void main(String[] args) {
