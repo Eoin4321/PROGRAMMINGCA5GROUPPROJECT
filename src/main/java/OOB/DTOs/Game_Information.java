@@ -1,4 +1,6 @@
-package PROGRAMMING.DAOs.DTOs;
+//AUTHOR EOIN HAMILL
+
+package OOB.DTOs;
 
 public class Game_Information {
     int GameId;
