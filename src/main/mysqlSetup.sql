@@ -20,7 +20,7 @@ VALUES('Overwatch 2','PC','Activision Blizzard','Blizzard','Overwatch','2022-9-2
       ('Overwatch','PC','Activision Blizzard','Blizzard','Overwatch','2016-5-24',TRUE,12,97),
       ('Marvel Snap','Phone','Second Dinner','Second Dinner','Marvel','2022-10-18',TRUE,2,98),
       ('My Hero Ones Justice','PC','By King','Bandai Namco','My Hero Academia','2018-9-23',TRUE,2,99),
-      ('My Hero Ones Justice','PC','By King','Bandai Namco','My Hero Academia','2020-3-12',TRUE,2,95);
+      ('My Hero Ones Justice 2','PC','By King','Bandai Namco','My Hero Academia','2020-3-12',TRUE,2,95);
 
 --AUTHOR Eoin Hamill
 --COAUTHOR DOVYDAS

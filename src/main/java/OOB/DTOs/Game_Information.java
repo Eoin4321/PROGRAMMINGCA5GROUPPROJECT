@@ -6,6 +6,7 @@ public class Game_Information {
     int GameId;
     String Game_name;
     String Game_console;
+    String Game_publisher;
     String Game_developer;
     String Game_franchise;
     String Game_releasedate;
@@ -18,10 +19,11 @@ public class Game_Information {
     }
 
     //FULL CONSTRUCTOR
-    public Game_Information(int gameId, String game_name, String game_console, String game_developer, String game_franchise, String game_releasedate, Boolean multiplayer, int player_amount, int review_Score) {
+    public Game_Information(int gameId, String game_name, String game_console, String game_publisher,String game_developer, String game_franchise, String game_releasedate, Boolean multiplayer, int player_amount, int review_Score) {
         GameId = gameId;
         Game_name = game_name;
         Game_console = game_console;
+        Game_publisher = game_publisher;
         Game_developer = game_developer;
         Game_franchise = game_franchise;
         Game_releasedate = game_releasedate;
@@ -31,6 +33,10 @@ public class Game_Information {
     }
     //GETTERS
 
+
+    public String getGame_publisher() {
+        return Game_publisher;
+    }
 
     public int getGameId() {
         return GameId;
@@ -69,6 +75,11 @@ public class Game_Information {
     }
 
     //SETTERS
+
+    public void setGame_publisher(String game_publisher) {
+        Game_publisher = game_publisher;
+    }
+
     public void setGameId(int gameId) {
         GameId = gameId;
     }
@@ -106,12 +117,14 @@ public class Game_Information {
     }
 
     //TOSTRING
+
     @Override
     public String toString() {
         return "Game_Information{" +
                 "GameId=" + GameId +
                 ", Game_name='" + Game_name + '\'' +
                 ", Game_console='" + Game_console + '\'' +
+                ", Game_publisher='" + Game_publisher + '\'' +
                 ", Game_developer='" + Game_developer + '\'' +
                 ", Game_franchise='" + Game_franchise + '\'' +
                 ", Game_releasedate='" + Game_releasedate + '\'' +
