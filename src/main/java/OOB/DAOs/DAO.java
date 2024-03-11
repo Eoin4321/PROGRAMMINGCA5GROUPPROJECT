@@ -75,7 +75,7 @@ public class DAO {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         Statement state = connection.createStatement();
-        ResultSet result = state.executeQuery("SELECT * from gameinformation");
+        ResultSet result = state.executeQuery("SELECT * from gameinformation WHERE GAMEId = "+id);
         Game_Information game = new Game_Information();
         while(result.next())
         {
