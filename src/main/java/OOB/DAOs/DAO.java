@@ -71,6 +71,28 @@ public class DAO {
         return game;
     }
 
+    public Game_Information getGameById(int id) throws SQLException {
+        DAO dao =DAO.getInstance();
+        Connection connection = getConnection();
+        Statement state = connection.createStatement();
+        ResultSet result = state.executeQuery("SELECT * from gameinformation");
+        Game_Information game = new Game_Information();
+        while(result.next())
+        {
+            game.setGameId(result.getInt("GameId"));
+            game.setGame_name(result.getString("Game_name"));
+            game.setGame_console(result.getString("Game_console"));
+            game.setGame_developer(result.getString("Game_developer"));
+            game.setGame_franchise(result.getString("Game_developer"));
+            game.setGame_releasedate(result.getString("Game_releasedate"));
+            game.setMultiplayer(result.getBoolean("Multiplayer"));
+            game.setPlayer_amount(result.getInt("Player_amount"));
+            game.setReview_Score(result.getInt("Review_Score"));
+        }
+        connection.close();
+        return game;
+    }
+
 
 
 

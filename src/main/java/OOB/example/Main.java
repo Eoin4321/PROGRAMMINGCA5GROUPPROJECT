@@ -38,12 +38,13 @@ public class Main{
             //Helped with by Dovydas
             if(choice==1)
             {
-
                 System.out.println(dao.getAllGames());
             }
             if(choice==2)
             {
-
+                System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
+                int id= keyboard.nextInt();
+                System.out.println(dao.getGameById(id));
             }
             if(choice==3) {
 
