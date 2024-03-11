@@ -35,17 +35,19 @@ public class Main{
             choice= keyboard.nextInt();
             //THis will run function 1
             //Author of Function 1 Eoin Hamill
-            //Helped with by Dovydas
+            //Helped with by Dovydas. Helped troubleshoot why database was not connecting
             if(choice==1)
             {
                 System.out.println(dao.getAllGames());
             }
+            //Author EOIN HAMILL
             if(choice==2)
             {
                 System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
                 int id= keyboard.nextInt();
                 System.out.println(dao.getGameById(id));
             }
+            //AUTHOR EOIN HAMILL
             if(choice==3) {
                 System.out.println("TYPE IN ID YOU WANT TO DELETE ");
                 int id= keyboard.nextInt();

@@ -96,8 +96,9 @@ public class DAO {
     public void deleteGameById(int id) throws SQLException {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
-        Statement state = connection.createStatement();
-        ResultSet result = state.executeQuery("DELETE FROM gameinformation WHERE GAMEId = "+id);
+        PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM gameinformation WHERE GAMEId = "+id);
+        deleteStatement.executeUpdate();
+
     }
 
 
