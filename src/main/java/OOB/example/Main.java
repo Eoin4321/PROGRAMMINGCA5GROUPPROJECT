@@ -53,8 +53,30 @@ public class Main{
                 int id= keyboard.nextInt();
                 dao.deleteGameById(id);
             }
+            //AUTHOR EOIN HAMILL
             if(choice==4)
             {
+                Game_Information addinggame = new Game_Information();
+                System.out.println("Type in information to insert into database. First name");
+                addinggame.setGame_name(keyboard.next());
+                System.out.println("Console");
+                addinggame.setGame_console(keyboard.next());
+                System.out.println("Developer");
+                addinggame.setGame_developer(keyboard.next());
+                System.out.println("Publisher");
+                addinggame.setGame_publisher(keyboard.next());
+                System.out.println("Franchise");
+                addinggame.setGame_franchise(keyboard.next());
+                System.out.println("Release date");
+                addinggame.setGame_releasedate(keyboard.next());
+                System.out.println("Multiplayer");
+                addinggame.setMultiplayer(Boolean.valueOf(keyboard.next()));
+                System.out.println("Playercount");
+                addinggame.setPlayer_amount(Integer.parseInt(keyboard.next()));
+                System.out.println("Review Score");
+                addinggame.setReview_Score(Integer.parseInt(keyboard.next()));
+                dao.insertGame(addinggame);
+
 
             }
         }
