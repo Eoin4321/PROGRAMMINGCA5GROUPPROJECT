@@ -47,7 +47,9 @@ public class Main{
                 System.out.println(dao.getGameById(id));
             }
             if(choice==3) {
-
+                System.out.println("TYPE IN ID YOU WANT TO DELETE ");
+                int id= keyboard.nextInt();
+                dao.deleteGameById(id);
             }
             if(choice==4)
             {
