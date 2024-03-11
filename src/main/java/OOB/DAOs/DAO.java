@@ -104,8 +104,8 @@ public class DAO {
     public void insertGame(Game_Information game) throws SQLException {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
-        String name = game.getGame_name();
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation VALUES (null,"+game.getGame_name()+","+game.getGame_console()+","+game.getGame_developer()+","+game.getGame_publisher()+","+game.getGame_franchise()+","+game.getGame_releasedate()+","+game.getMultiplayer()+","+game.getPlayer_amount()+","+game.getReview_Score()+")");
+
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation VALUES(Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Game_releasedate,Multiplayer,Player_amount,Review_Score) (\""+game.getGame_name()+"\",\""+game.getGame_console()+"\",\""+game.getGame_developer()+"\",\""+game.getGame_publisher()+"\",\""+game.getGame_franchise()+"\",\""+game.getGame_releasedate()+"\","+game.getMultiplayer()+","+game.getPlayer_amount()+","+game.getReview_Score()+")");
         insertStatement.executeUpdate();
     }
 
