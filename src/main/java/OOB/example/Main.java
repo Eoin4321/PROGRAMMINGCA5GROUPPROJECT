@@ -79,6 +79,13 @@ public class Main{
 
 
             }
+            if(choice==5)
+            {
+                System.out.println("TYPE IN ID YOU WANT TO DELETE ");
+                int id= keyboard.nextInt();
+                Game_Information game=dao.getGameById(id);
+                dao.updateGameInfo(id,game);
+            }
         }
     }
 }
