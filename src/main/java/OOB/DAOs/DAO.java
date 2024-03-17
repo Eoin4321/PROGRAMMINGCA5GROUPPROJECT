@@ -8,6 +8,7 @@ import javax.xml.transform.Result;
 import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -150,6 +151,39 @@ public class DAO {
 
 
 
+    }
+
+    //AUTHOR EOIN HAMILL WROTE THE METHOD
+    public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gamenameComparator) throws SQLException{
+        Scanner kb = new Scanner(System.in);
+        System.out.println("Enter Name You would like to filter by");
+        String filter=kb.next();
+        DAO dao =DAO.getInstance();
+        Connection connection = getConnection();
+        List<Game_Information> game =new ArrayList();
+        Statement state = connection.createStatement();
+        ResultSet result = state.executeQuery("SELECT * from gameinformation");
+
+        while(result.next())
+        {
+            Game_Information addinggame = new Game_Information();
+            addinggame.setGameId(result.getInt("GameId"));
+            addinggame.setGame_name(result.getString("Game_name"));
+            addinggame.setGame_console(result.getString("Game_console"));
+            addinggame.setGame_developer(result.getString("Game_developer"));
+            addinggame.setGame_franchise(result.getString("Game_developer"));
+            addinggame.setGame_releasedate(result.getString("Game_releasedate"));
+            addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
+            addinggame.setPlayer_amount(result.getInt("Player_amount"));
+            addinggame.setReview_Score(result.getInt("Review_Score"));
+
+
+
+
+
+        }
+        connection.close();
+        return game;
     }
 
 

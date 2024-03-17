@@ -4,6 +4,7 @@ package OOB.example;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
 
@@ -85,6 +86,11 @@ public class Main{
                 int id= keyboard.nextInt();
                 Game_Information game=dao.getGameById(id);
                 dao.updateGameInfo(id,game);
+            }
+            if(choice==6)
+            {
+                Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
+
             }
         }
     }
