@@ -31,6 +31,13 @@ public class Game_Information {
         Player_amount = player_amount;
         Review_Score = review_Score;
     }
+    //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter entitys
+
+    public Game_Information(String game_name) {
+        Game_name = game_name;
+    }
+
+
     //GETTERS
 
 

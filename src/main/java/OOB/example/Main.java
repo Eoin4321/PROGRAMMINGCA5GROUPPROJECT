@@ -82,15 +82,16 @@ public class Main{
             }
             if(choice==5)
             {
-                System.out.println("TYPE IN ID YOU WANT TO DELETE ");
+                System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
                 int id= keyboard.nextInt();
                 Game_Information game=dao.getGameById(id);
                 dao.updateGameInfo(id,game);
             }
             if(choice==6)
             {
+                System.out.println("CHOICE 6");
                 Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
-
+                System.out.println(dao.gameInformationBasedOnName(gamenameComparator));
             }
         }
     }

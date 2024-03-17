@@ -157,7 +157,7 @@ public class DAO {
     public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gamenameComparator) throws SQLException{
         Scanner kb = new Scanner(System.in);
         System.out.println("Enter Name You would like to filter by");
-        String filter=kb.next();
+        String filter=kb.nextLine();
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         List<Game_Information> game =new ArrayList();
@@ -177,7 +177,10 @@ public class DAO {
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
 
-
+            if(gamenameComparator.compare(addinggame, new Game_Information(filter))==0)
+            {
+                game.add(addinggame);
+            }
 
 
 
