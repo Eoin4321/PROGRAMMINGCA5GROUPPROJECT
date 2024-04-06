@@ -17,5 +17,13 @@ public class JSonConverter{
         return gameListJson;
     }
 
+    public static String gameToJson(Game_Information game)
+    {
+        Gson gsonParser = new Gson();
+        String gameJson = gsonParser.toJson(game);
+        return gameJson;
+    }
+
+
 }
 
