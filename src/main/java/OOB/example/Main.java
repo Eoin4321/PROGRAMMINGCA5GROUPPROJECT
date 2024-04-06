@@ -98,7 +98,9 @@ public class Main{
             }
             if(choice==7)
             {
-                System.out.println(dao.getAllGames());
+                List<Game_Information> game = dao.getAllGames();
+                String gameJson = JSonConverter.gameListToJson(game);
+                System.out.println(gameJson);
 
             }
         }
