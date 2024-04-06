@@ -12,6 +12,8 @@ import OOB.DAOs.DAO;
 
 import OOB.DTOs.Game_Information;
 
+
+
 public class Main{
     public static void main(String[] args) throws SQLException {
         //Creating keyboard
@@ -85,6 +87,7 @@ public class Main{
                 System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
                 int id= keyboard.nextInt();
                 Game_Information game=dao.getGameById(id);
+
                 dao.updateGameInfo(id,game);
             }
             if(choice==6)
@@ -92,6 +95,11 @@ public class Main{
                 System.out.println("CHOICE 6");
                 Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
                 System.out.println(dao.gameInformationBasedOnName(gamenameComparator));
+            }
+            if(choice==7)
+            {
+                System.out.println(dao.getAllGames());
+
             }
         }
     }

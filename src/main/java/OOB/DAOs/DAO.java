@@ -2,7 +2,7 @@
 
 package OOB.DAOs;
 import OOB.DTOs.Game_Information;
-
+import com.google.gson.Gson;
 import javax.swing.plaf.nimbus.State;
 import javax.xml.transform.Result;
 import java.net.ConnectException;
@@ -153,7 +153,7 @@ public class DAO {
 
     }
 
-    //AUTHOR EOIN HAMILL WROTE THE METHOD
+    //AUTHOR EOIN HAMILL wrote this entire function
     public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gamenameComparator) throws SQLException{
         Scanner kb = new Scanner(System.in);
         System.out.println("Enter Name You would like to filter by");
