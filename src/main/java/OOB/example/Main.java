@@ -103,6 +103,14 @@ public class Main{
                 System.out.println(gameJson);
 
             }
+            if(choice==8)
+            {
+                System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
+                int id= keyboard.nextInt();
+                Game_Information gameJson = dao.getGameById(id);
+                String gamegameJson = JSonConverter.gameToJson(gameJson);
+                System.out.println(gamegameJson);
+            }
         }
     }
 }
