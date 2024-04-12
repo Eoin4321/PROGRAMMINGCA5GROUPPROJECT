@@ -116,42 +116,15 @@ public class DAO {
     }
 
     //AUTHOR DOVYDAS created this function
-    public static void updateGameInfo(int id, Game_Information game) {
+    public void updateGameInfo(int id, Game_Information game) throws SQLException {
         Scanner kb = new Scanner(System.in);
-        String userChange;      boolean userBoolChange;     int userPlayerChange;
-
-        if (id==1)
-        {
-            System.out.println("Which variable would you like to Update");
-            System.out.print("1. Game Console\n2. Multiplayer\n3. Player Amount \n4. Review Score\n");
-            int choice = kb.nextInt();
-            if (choice ==1) {
-                System.out.println(game.getGame_name()+" :What Console can I play at");
-                userChange = kb.nextLine();
-
+        String userChange;
+        DAO dao =DAO.getInstance();
+        Connection connection = getConnection();
+        Statement state = connection.createStatement();
             }
-            else if (choice == 2){
-                System.out.println(game.getGame_name()+" :Did it change the Multiplayer (True or False)");
-                userBoolChange = kb.nextBoolean();
-                game.setMultiplayer(userBoolChange);
-            }
-            else if (choice ==3) {
-                System.out.println(game.getGame_name()+ " :How much did the player base change");
-                userPlayerChange = kb.nextInt();
-                game.setPlayer_amount(userPlayerChange);
-            }
-            else {
-                System.out.println("That option isn't available");
-            }
-        }
-        else
-        {
-            System.out.println("Game doesn't exist within the database!!!");
-        }
 
 
-
-    }
 
     //AUTHOR EOIN HAMILL wrote this entire function
     public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gamenameComparator) throws SQLException{
