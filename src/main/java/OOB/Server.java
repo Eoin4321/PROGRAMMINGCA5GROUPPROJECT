@@ -112,6 +112,7 @@ class ClientHandler implements Runnable
                     socketWriter.println(gamegameJson);
                     System.out.println("Server message: JSON sent to client.");
                 }
+
                 else{
                     socketWriter.println("error I'm sorry I don't understand your request");
                     System.out.println("Your input was :"+request);
