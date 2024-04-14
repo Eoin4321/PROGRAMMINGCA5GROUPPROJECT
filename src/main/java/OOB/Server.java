@@ -1,11 +1,18 @@
 package OOB;
 
+import OOB.DTOs.Game_Information;
+import OOB.example.JSonConverter;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
+
+import OOB.DAOs.DAO;
+import OOB.DTOs.Game_Information;
 
 
 public class Server {
@@ -99,8 +106,11 @@ class ClientHandler implements Runnable
                 //If client wants command 1 runs this etc...
                 if (request.equals("1"))
                 {
-                    socketWriter.println("Winton");
-                    System.out.println("Server message: time sent to client.");
+                    DAO dao =DAO.getInstance();
+                    Game_Information gameJson = dao.getGameById(3);
+                    String gamegameJson = JSonConverter.gameToJson(gameJson);
+                    socketWriter.println(gamegameJson);
+                    System.out.println("Server message: JSON sent to client.");
                 }
                 else{
                     socketWriter.println("error I'm sorry I don't understand your request");
@@ -110,6 +120,8 @@ class ClientHandler implements Runnable
             }
         } catch (IOException ex) {
             ex.printStackTrace();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         } finally {
             this.socketWriter.close();
             try {
