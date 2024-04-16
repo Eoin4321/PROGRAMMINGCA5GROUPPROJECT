@@ -104,10 +104,10 @@ class ClientHandler implements Runnable
 
 
                 //If client wants command 1 runs this etc...
-                if (request.equals("1"))
+                if (request.substring(0, 1).equals("1"))
                 {
                     DAO dao =DAO.getInstance();
-                    Game_Information gameJson = dao.getGameById(3);
+                    Game_Information gameJson = dao.getGameById(Integer.parseInt(request.substring(2)));
                     String gamegameJson = JSonConverter.gameToJson(gameJson);
                     socketWriter.println(gamegameJson);
                     System.out.println("Server message: JSON sent to client.");

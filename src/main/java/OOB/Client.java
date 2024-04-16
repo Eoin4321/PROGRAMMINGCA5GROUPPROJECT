@@ -31,7 +31,7 @@ public class Client {
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             Scanner consoleInput = new Scanner(System.in);
-            System.out.println("Valid commands are: Type 1 to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
+            System.out.println("Valid commands are: Type 1 + ID Digit to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
             System.out.println("Please enter a command: ");
             String userRequest = consoleInput.nextLine();
             // Instantiate (create) a Gson Parser
@@ -44,7 +44,7 @@ public class Client {
                 //
                 //COMMAND 1 to Display Entity by Id
                 //If users request is 1
-                if (userRequest.equals("1")) {
+                if (userRequest.substring(0, 1).equals("1")) {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
                     //We then convert this JSON to a gameinfo object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
