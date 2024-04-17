@@ -4,14 +4,17 @@ package OOB;
 import OOB.DTOs.Game_Information;
 
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Scanner;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
 
 
 public class Client {
@@ -56,6 +59,13 @@ public class Client {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
                     System.out.println("Your game is " + game);
+                }
+
+                else if(userRequest.equals("2"))
+                {
+                    String JsonGameId = in.readLine();
+
+
                 }
 
                 else {

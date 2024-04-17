@@ -60,7 +60,6 @@ public class DAO {
             addinggame.setGame_console(result.getString("Game_console"));
             addinggame.setGame_developer(result.getString("Game_developer"));
             addinggame.setGame_franchise(result.getString("Game_developer"));
-            addinggame.setGame_releasedate(result.getString("Game_releasedate"));
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
@@ -88,7 +87,6 @@ public class DAO {
             game.setGame_console(result.getString("Game_console"));
             game.setGame_developer(result.getString("Game_developer"));
             game.setGame_franchise(result.getString("Game_developer"));
-            game.setGame_releasedate(result.getString("Game_releasedate"));
             game.setMultiplayer(result.getBoolean("Multiplayer"));
             game.setPlayer_amount(result.getInt("Player_amount"));
             game.setReview_Score(result.getInt("Review_Score"));
@@ -111,7 +109,16 @@ public class DAO {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
 
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation VALUES(Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Game_releasedate,Multiplayer,Player_amount,Review_Score) (\""+game.getGame_name()+"\",\""+game.getGame_console()+"\",\""+game.getGame_developer()+"\",\""+game.getGame_publisher()+"\",\""+game.getGame_franchise()+"\",\""+game.getGame_releasedate()+"\","+game.getMultiplayer()+","+game.getPlayer_amount()+","+game.getReview_Score()+")");
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score) Values(?,?,?,?,?,?,?,?)");
+        insertStatement.setString(1, game.getGame_name());
+        insertStatement.setString(2, game.getGame_console());
+        insertStatement.setString(3, game.getGame_publisher());
+        insertStatement.setString(4, game.getGame_developer());
+        insertStatement.setString(5, game.getGame_franchise());
+        insertStatement.setBoolean(6, game.getMultiplayer());
+        insertStatement.setInt(7, game.getPlayer_amount());
+        insertStatement.setDouble(8, game.getReview_Score());
+
         insertStatement.executeUpdate();
     }
 
@@ -145,7 +152,6 @@ public class DAO {
             addinggame.setGame_console(result.getString("Game_console"));
             addinggame.setGame_developer(result.getString("Game_developer"));
             addinggame.setGame_franchise(result.getString("Game_developer"));
-            addinggame.setGame_releasedate(result.getString("Game_releasedate"));
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));

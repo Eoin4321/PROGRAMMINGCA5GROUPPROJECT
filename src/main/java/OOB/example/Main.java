@@ -68,8 +68,6 @@ public class Main{
                 addinggame.setGame_publisher(keyboard.next());
                 System.out.println("Franchise");
                 addinggame.setGame_franchise(keyboard.next());
-                System.out.println("Release date");
-                addinggame.setGame_releasedate(keyboard.next());
                 System.out.println("Multiplayer");
                 addinggame.setMultiplayer(Boolean.valueOf(keyboard.next()));
                 System.out.println("Playercount");
@@ -96,8 +94,6 @@ public class Main{
                 addinggame.setGame_publisher(keyboard.next());
                 System.out.println("Franchise");
                 addinggame.setGame_franchise(keyboard.next());
-                System.out.println("Release date");
-                addinggame.setGame_releasedate(keyboard.next());
                 System.out.println("Multiplayer");
                 addinggame.setMultiplayer(Boolean.valueOf(keyboard.next()));
                 System.out.println("Playercount");

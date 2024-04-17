@@ -9,24 +9,22 @@ public class Game_Information {
     String Game_publisher;
     String Game_developer;
     String Game_franchise;
-    String Game_releasedate;
     Boolean Multiplayer;
     int Player_amount;
-    int Review_Score;
+    double Review_Score;
 
     //EMPTY CONSTRUCTOR
     public Game_Information() {
     }
 
     //FULL CONSTRUCTOR
-    public Game_Information(int gameId, String game_name, String game_console, String game_publisher,String game_developer, String game_franchise, String game_releasedate, Boolean multiplayer, int player_amount, int review_Score) {
+    public Game_Information(int gameId, String game_name, String game_console, String game_publisher,String game_developer, String game_franchise,Boolean multiplayer, int player_amount, int review_Score) {
         GameId = gameId;
         Game_name = game_name;
         Game_console = game_console;
         Game_publisher = game_publisher;
         Game_developer = game_developer;
         Game_franchise = game_franchise;
-        Game_releasedate = game_releasedate;
         Multiplayer = multiplayer;
         Player_amount = player_amount;
         Review_Score = review_Score;
@@ -65,10 +63,6 @@ public class Game_Information {
         return Game_franchise;
     }
 
-    public String getGame_releasedate() {
-        return Game_releasedate;
-    }
-
     public Boolean getMultiplayer() {
         return Multiplayer;
     }
@@ -77,7 +71,7 @@ public class Game_Information {
         return Player_amount;
     }
 
-    public int getReview_Score() {
+    public double getReview_Score() {
         return Review_Score;
     }
 
@@ -107,10 +101,6 @@ public class Game_Information {
         Game_franchise = game_franchise;
     }
 
-    public void setGame_releasedate(String game_releasedate) {
-        Game_releasedate = game_releasedate;
-    }
-
     public void setMultiplayer(Boolean multiplayer) {
         Multiplayer = multiplayer;
     }
@@ -119,7 +109,7 @@ public class Game_Information {
         Player_amount = player_amount;
     }
 
-    public void setReview_Score(int review_Score) {
+    public void setReview_Score(double review_Score) {
         Review_Score = review_Score;
     }
 
@@ -134,7 +124,6 @@ public class Game_Information {
                 ", Game_publisher='" + Game_publisher + '\'' +
                 ", Game_developer='" + Game_developer + '\'' +
                 ", Game_franchise='" + Game_franchise + '\'' +
-                ", Game_releasedate='" + Game_releasedate + '\'' +
                 ", Multiplayer=" + Multiplayer +
                 ", Player_amount=" + Player_amount +
                 ", Review_Score=" + Review_Score +
