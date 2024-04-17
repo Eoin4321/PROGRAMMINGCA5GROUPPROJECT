@@ -10,12 +10,12 @@ CREATE TABLE GameInformation (
                                  Multiplayer Boolean NOT NUll,
                                  Player_amount INT NOT NULL,
                                  Review_Score FLOAT NOT NULL,
-
+                                 Image_ID VARCHAR(20) NULL,
                                  PRIMARY KEY (GameID)
 );
 
 INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score)
-VALUES('Overwatch 2','PC','Activision Blizzard','Blizzard','Overwatch',TRUE,10,100),
+VALUES('Overwatch 2','PC','Activision Blizzard','Blizzard','Overwatch',TRUE,10,100,'OVERWATCH.jpg'),
       ('Overwatch','PC','Activision Blizzard','Blizzard','Overwatch',TRUE,12,97),
       ('Marvel Snap','Phone','Second Dinner','Second Dinner','Marvel',TRUE,2,98),
       ('My Hero Ones Justice','PC','By King','Bandai Namco','My Hero Academia',TRUE,2,99),

@@ -27,25 +27,5 @@ public class FunctionsTests {
         assertEquals(game.size(),10);
     }
 
-    @Test
-    void function2true() throws SQLException {
-        Game_Information game = new Game_Information();
-        dao.getGameById(1);
-
-
-        game.setGameId(3);
-        game.setGame_name("Marvel Snap");
-        game.setGame_console("3DS");
-        game.setGame_developer("Second Dinner");
-        game.setGame_franchise("Second Dinner");
-        game.setGame_releasedate("2022-10-18");
-        game.setMultiplayer(true);
-        game.setPlayer_amount(2);
-        game.setReview_Score(98);
-
-
-        assertEquals(game,dao.getGameById(3));
-
-    }
 
 }

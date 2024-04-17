@@ -63,10 +63,7 @@ public class DAO {
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
-
             game.add(addinggame);
-
-
 
         }
         connection.close();
@@ -122,13 +119,25 @@ public class DAO {
         insertStatement.executeUpdate();
     }
 
-    //AUTHOR DOVYDAS created this function
+    //Author Dovydas and Eoin
     public void updateGameInfo(int id, Game_Information game) throws SQLException {
-        Scanner kb = new Scanner(System.in);
-        String userChange;
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
-        Statement state = connection.createStatement();
+
+        PreparedStatement insertStatement = connection.prepareStatement("UPDATE gameinformation \n" +
+                "SET Game_name =?, Game_console=?,Game_developer=?,Game_franchise=?,Game_publisher=?,Multiplayer=?,Player_amount=?,Review_Score=?\n" +
+                "WHERE GameID =?");
+        insertStatement.setString(1, game.getGame_name());
+        insertStatement.setString(2, game.getGame_console());
+        insertStatement.setString(3, game.getGame_publisher());
+        insertStatement.setString(4, game.getGame_developer());
+        insertStatement.setString(5, game.getGame_franchise());
+        insertStatement.setBoolean(6, game.getMultiplayer());
+        insertStatement.setInt(7, game.getPlayer_amount());
+        insertStatement.setDouble(8, game.getReview_Score());
+        insertStatement.setInt(9,id);
+
+        insertStatement.executeUpdate();
             }
 
 

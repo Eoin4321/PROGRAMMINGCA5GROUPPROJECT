@@ -100,7 +100,6 @@ public class Main{
                 addinggame.setPlayer_amount(Integer.parseInt(keyboard.next()));
                 System.out.println("Review Score");
                 addinggame.setReview_Score(Integer.parseInt(keyboard.next()));
-                dao.insertGame(addinggame);
                 dao.updateGameInfo(id,addinggame);
             }
             if(choice==6)
@@ -123,7 +122,13 @@ public class Main{
                 Game_Information gameJson = dao.getGameById(id);
                 String gamegameJson = JSonConverter.gameToJson(gameJson);
                 System.out.println(gamegameJson);
+
             }
+            if(choice==12)
+            {
+
+            }
+
         }
     }
 }
