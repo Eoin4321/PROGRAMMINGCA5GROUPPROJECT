@@ -17,6 +17,8 @@ import com.google.gson.reflect.TypeToken;
 
 
 public class Client {
+    private static DataOutputStream dataOutputStream = null;
+    private static DataInputStream dataInputStream = null;
     public static void main(String[] args) {
         Client client = new Client();
         client.start();
@@ -30,6 +32,8 @@ public class Client {
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream( socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             Scanner consoleInput = new Scanner(System.in);
@@ -82,6 +86,17 @@ public class Client {
                     System.out.println(in.readLine());
                 }
 
+                else if(userRequest.substring(0, 1).equals("5"))
+                {
+                    //String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
+                    //We then convert this JSON to a gameinfo object
+                    //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
+                    //Parsing the JSON string into a gameInformation object.
+
+                    receiveFile("images/Recieved_image_received.jpg");
+                }
+
+
                 else {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:"+userRequest);
@@ -94,8 +109,52 @@ public class Client {
             }
         } catch (IOException e) {
             System.out.println("Client message: IOException: " + e);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
         }
 
         System.out.println("Exiting client, Server could still be running");
+    }
+    //METHOD TO RECEIVE FILE
+    private static void receiveFile(String fileName)
+            throws Exception
+    {
+        int bytes = 0;
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName);
+
+
+        // DataInputStream allows us to read Java primitive types from stream e.g. readLong()
+        // read the size of the file in bytes (the file length)
+        long size = dataInputStream.readLong();
+        System.out.println("Server: file size in bytes = " + size);
+
+
+        // create a buffer to receive the incoming bytes from the socket
+        byte[] buffer = new byte[4 * 1024];         // 4 kilobyte buffer
+
+        System.out.println("Server:  Bytes remaining to be read from socket: ");
+
+        // next, read the raw bytes in chunks (buffer size) that make up the image file
+        while (size > 0 &&
+                (bytes = dataInputStream.read(buffer, 0,(int)Math.min(buffer.length, size))) != -1) {
+
+            // above, we read a number of bytes from stream to fill the buffer (if there are enough remaining)
+            // - the number of bytes we must read is the smallest (min) of: the buffer length and the remaining size of the file
+            //- (remember that the last chunk of data read will usually not fill the buffer)
+
+            // Here we write the buffer data into the local file
+            fileOutputStream.write(buffer, 0, bytes);
+
+            // reduce the 'size' by the number of bytes read in.
+            // 'size' represents the number of bytes remaining to be read from the socket stream.
+            // We repeat this until all the bytes are dealt with and the size is reduced to zero
+            size = size - bytes;
+            System.out.print(size + ", ");
+        }
+
+        System.out.println("File is Received");
+
+        System.out.println("Look in the images folder to see the transferred file: winton.png");
+        fileOutputStream.close();
     }
 }

@@ -1,12 +1,10 @@
+
 package OOB;
 
 import OOB.DTOs.Game_Information;
 import OOB.example.JSonConverter;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
@@ -18,19 +16,20 @@ import OOB.DTOs.Game_Information;
 
 
 public class Server {
+    private static DataOutputStream dataOutputStream = null;
+    private static DataInputStream dataInputStream = null;
 
     final int SERVER_PORT_NUMBER = 8888;
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.start();
     }
 
-    public void start() {
+    public void start() throws IOException {
 
         ServerSocket serverSocket =null;
         Socket clientSocket =null;
-
         try {
             serverSocket = new ServerSocket(SERVER_PORT_NUMBER);
             System.out.println("Server has started.");
@@ -44,6 +43,9 @@ public class Server {
                 System.out.println("Server: Port number of remote client: " + clientSocket.getPort());
                 System.out.println("Server: Port number of the socket used to talk with client " + clientSocket.getLocalPort());
 
+
+                dataInputStream = new DataInputStream(clientSocket.getInputStream());
+                dataOutputStream = new DataOutputStream( clientSocket.getOutputStream());
                 //Making a clienthandler for the client request.
                 //Passing in socket and client number
 
@@ -72,6 +74,29 @@ public class Server {
 
         }
         System.out.println("Server: Server exiting, Goodbye!");
+    }
+    static void sendFile(String path)
+            throws Exception
+    {
+        int bytes = 0;
+        // Open the File at the specified location (path)
+        File file = new File(path);
+        FileInputStream fileInputStream = new FileInputStream(file);
+
+        // send the length (in bytes) of the file to the server
+        dataOutputStream.writeLong(file.length());
+
+        // Here we break file into chunks
+        byte[] buffer = new byte[4 * 1024]; // 4 kilobyte buffer
+
+        // read bytes from file into the buffer until buffer is full or we reached end of file
+        while ((bytes = fileInputStream.read(buffer))!= -1) {
+            // Send the buffer contents to Server Socket, along with the count of the number of bytes
+            dataOutputStream.write(buffer, 0, bytes);
+            dataOutputStream.flush();   // force the data into the stream
+        }
+        // close the file
+        fileInputStream.close();
     }
 }
 
@@ -129,6 +154,11 @@ class ClientHandler implements Runnable
                     System.out.println("Server Message: JSON sent to client.");
                 }
 
+                else if(request.substring(0, 1).equals("5"))
+                {
+                    Server.sendFile("images/OVERWATCH.jpg");
+                }
+
                 else{
                     socketWriter.println("error I'm sorry I don't understand your request");
                     System.out.println("Your input was :"+request);
@@ -138,6 +168,8 @@ class ClientHandler implements Runnable
         } catch (IOException ex) {
             ex.printStackTrace();
         } catch (SQLException e) {
+            throw new RuntimeException(e);
+        } catch (Exception e) {
             throw new RuntimeException(e);
         } finally {
             this.socketWriter.close();
@@ -150,4 +182,5 @@ class ClientHandler implements Runnable
         }
         System.out.println("Server: (ClientHandler): Handler for Client " + clientNumber + " is terminating .....");
     }
+
 }
