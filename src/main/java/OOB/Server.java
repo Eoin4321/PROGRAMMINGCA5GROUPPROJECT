@@ -10,6 +10,8 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import OOB.DAOs.DAO;
 import OOB.DTOs.Game_Information;
@@ -33,13 +35,11 @@ public class Server {
             serverSocket = new ServerSocket(SERVER_PORT_NUMBER);
             System.out.println("Server has started.");
             int clientNumber = 0;  //assigning a number to the client
-
             while (true) {
                 System.out.println("Server: Listening/waiting for connections on port ..." + SERVER_PORT_NUMBER);
                 clientSocket = serverSocket.accept();
                 clientNumber++;
                 System.out.println("Server: Listening for connections on port ..." + SERVER_PORT_NUMBER);
-
                 System.out.println("Server: Client " + clientNumber + " has connected.");
                 System.out.println("Server: Port number of remote client: " + clientSocket.getPort());
                 System.out.println("Server: Port number of the socket used to talk with client " + clientSocket.getLocalPort());
@@ -110,7 +110,16 @@ class ClientHandler implements Runnable
                     Game_Information gameJson = dao.getGameById(Integer.parseInt(request.substring(2)));
                     String gamegameJson = JSonConverter.gameToJson(gameJson);
                     socketWriter.println(gamegameJson);
-                    System.out.println("Server message: JSON sent to client.");
+                    System.out.println("Server Message: JSON sent to client.");
+                }
+                else if(request.equals("2"))
+                {
+                    System.out.println("Server running command 2");
+                    DAO dao =DAO.getInstance();
+                    List<Game_Information> games =dao.getAllGames();
+                    String gameJson = JSonConverter.gameListToJson(games);
+                    socketWriter.println(gameJson);
+                    System.out.println("Server Message: JSON string containing list of games sent to client");
                 }
 
                 else{

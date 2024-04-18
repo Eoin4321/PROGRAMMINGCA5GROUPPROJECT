@@ -1,7 +1,4 @@
-//AUTHOR EOIN HAMILL
-
 package OOB.example;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -9,9 +6,6 @@ import java.util.List;
 import java.util.Scanner;
 import OOB.DAOs.DAO;
 import OOB.DTOs.Game_Information;
-
-
-
 public class Main{
     public static void main(String[] args) throws SQLException {
         //Creating keyboard
@@ -75,8 +69,6 @@ public class Main{
                 System.out.println("Review Score");
                 addinggame.setReview_Score(Integer.parseInt(keyboard.next()));
                 dao.insertGame(addinggame);
-
-
             }
             if(choice==5)
             {
@@ -122,13 +114,7 @@ public class Main{
                 Game_Information gameJson = dao.getGameById(id);
                 String gamegameJson = JSonConverter.gameToJson(gameJson);
                 System.out.println(gamegameJson);
-
             }
-            if(choice==12)
-            {
-
-            }
-
         }
     }
 }

@@ -9,9 +9,8 @@ import java.net.Socket;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Date;
-import java.util.Scanner;
+import java.util.*;
+
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
@@ -63,9 +62,14 @@ public class Client {
 
                 else if(userRequest.equals("2"))
                 {
-                    String JsonGameId = in.readLine();
-
-
+                    String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
+                    List<Game_Information> games =new ArrayList();
+                    try {
+                        games = gsonParser.fromJson(JsonGameId, List.class);
+                    } catch (JsonSyntaxException ex) {
+                        System.out.println("Jason syntax error encountered. " + ex);
+                    }
+                    System.out.println(games);
                 }
 
                 else {
