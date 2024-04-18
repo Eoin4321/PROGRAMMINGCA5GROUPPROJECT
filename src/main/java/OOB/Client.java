@@ -72,6 +72,16 @@ public class Client {
                     System.out.println(games);
                 }
 
+                else if(userRequest.substring(0, 1).equals("4"))
+                {
+                    //String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
+                    //We then convert this JSON to a gameinfo object
+                    //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
+                    //Parsing the JSON string into a gameInformation object.
+
+                    System.out.println(in.readLine());
+                }
+
                 else {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:"+userRequest);

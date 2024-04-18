@@ -121,6 +121,13 @@ class ClientHandler implements Runnable
                     socketWriter.println(gameJson);
                     System.out.println("Server Message: JSON string containing list of games sent to client");
                 }
+                else if(request.substring(0, 1).equals("4"))
+                {
+                    DAO dao =DAO.getInstance();
+                    dao.deleteGameById(Integer.parseInt(request.substring(2)));
+                    socketWriter.println("If there was a game associated with this ID it has been deleted.");
+                    System.out.println("Server Message: JSON sent to client.");
+                }
 
                 else{
                     socketWriter.println("error I'm sorry I don't understand your request");
