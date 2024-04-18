@@ -42,7 +42,8 @@ public class Client {
             String userRequest = consoleInput.nextLine();
             // Instantiate (create) a Gson Parser
             Gson gsonParser = new Gson();
-            while(true) {
+            boolean endcode=false;
+            while(true&&endcode==false) {
                 // sending the command to the server on the socket
                 out.println(userRequest);      // write the request to socket along with a newline terminator (which is required)
 
@@ -94,6 +95,14 @@ public class Client {
                     //Parsing the JSON string into a gameInformation object.
 
                     receiveFile("images/Recieved_image_received.jpg");
+                }
+
+                else if(userRequest.equals("6"))
+                {
+                    socket.close();
+                    System.out.println("Client connection closed");
+                    endcode=true;
+                    break;
                 }
 
 
