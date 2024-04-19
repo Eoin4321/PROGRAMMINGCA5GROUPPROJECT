@@ -25,6 +25,7 @@ public class DAO {
 
     }
 
+    // if a DAO instance does not exist it will create one
     public static DAO getInstance() {
         if (instance == null)
             instance = new DAO();
@@ -32,11 +33,14 @@ public class DAO {
         return instance;
     }
 
+    //Setting up a connection to the database
     public Connection getConnection() {
         try {
+            //Making a connection with the database
             Connection conn = DriverManager.getConnection
                     (url + dbname, username, password);
             return conn;
+            //Will return this message if it cant connect with the database
         } catch (SQLException e) {
             System.out.println("Unable to connect to database"+e.getMessage());
             return null;
@@ -63,6 +67,7 @@ public class DAO {
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
+            addinggame.setImage(result.getString("Image_ID"));
             game.add(addinggame);
 
         }
@@ -87,6 +92,7 @@ public class DAO {
             game.setMultiplayer(result.getBoolean("Multiplayer"));
             game.setPlayer_amount(result.getInt("Player_amount"));
             game.setReview_Score(result.getInt("Review_Score"));
+            game.setImage(result.getString("Image_ID"));
         }
         connection.close();
         return game;

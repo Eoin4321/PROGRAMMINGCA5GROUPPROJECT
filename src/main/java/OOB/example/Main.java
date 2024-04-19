@@ -1,6 +1,5 @@
 package OOB.example;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
@@ -68,6 +67,8 @@ public class Main{
                 addinggame.setPlayer_amount(Integer.parseInt(keyboard.next()));
                 System.out.println("Review Score");
                 addinggame.setReview_Score(Integer.parseInt(keyboard.next()));
+                System.out.println("Image");
+                addinggame.setImage(keyboard.next());
                 dao.insertGame(addinggame);
             }
             if(choice==5)
@@ -92,6 +93,8 @@ public class Main{
                 addinggame.setPlayer_amount(Integer.parseInt(keyboard.next()));
                 System.out.println("Review Score");
                 addinggame.setReview_Score(Integer.parseInt(keyboard.next()));
+                System.out.println("Image");
+                addinggame.setImage(keyboard.next());
                 dao.updateGameInfo(id,addinggame);
             }
             if(choice==6)

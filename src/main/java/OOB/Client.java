@@ -40,9 +40,8 @@ public class Client {
             //Instantiate (create) a Gson Parser
             Gson gsonParser = new Gson();
 
-            boolean endcode=false;
             //A while loop which will run until turned off.
-            while(true&&endcode==false) {
+            while(true) {
                 out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
                 //COMMAND 1 to Display Entity by Id
@@ -85,22 +84,15 @@ public class Client {
 
                 else if(userRequest.substring(0, 1).equals("5"))
                 {
-                    //String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-                    //We then convert this JSON to a gameinfo object
-                    //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
-                    //Parsing the JSON string into a gameInformation object.
-
-                    receiveFile("images/Recieved_image_received.jpg");
+                    receiveFile("images/Recieved_image_"+in.readLine()+"_received.jpg");
                 }
 
                 else if(userRequest.equals("6"))
                 {
                     socket.close();
                     System.out.println("Client connection closed");
-                    endcode=true;
                     break;
                 }
-
 
                 else {
                     System.out.println("Not a valid user request.");

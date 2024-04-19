@@ -156,7 +156,11 @@ class ClientHandler implements Runnable
 
                 else if(request.substring(0, 1).equals("5"))
                 {
-                    Server.sendFile("images/OVERWATCH.jpg");
+                    DAO dao =DAO.getInstance();
+                    Game_Information game = dao.getGameById(Integer.parseInt(request.substring(2)));
+                    String image_id = game.getImage();
+                    socketWriter.println(image_id);
+                    Server.sendFile("images/"+image_id);
                 }
 
                 else{

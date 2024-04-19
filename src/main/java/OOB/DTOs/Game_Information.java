@@ -1,4 +1,6 @@
 //AUTHOR EOIN HAMILL
+//Basic code to set up a Game_Information object with getters and setters and a toString.
+//Includes String, int boolean and double.
 
 package OOB.DTOs;
 
@@ -12,13 +14,14 @@ public class Game_Information {
     Boolean Multiplayer;
     int Player_amount;
     double Review_Score;
+    String Image_ID;
 
     //EMPTY CONSTRUCTOR
     public Game_Information() {
     }
 
     //FULL CONSTRUCTOR
-    public Game_Information(int gameId, String game_name, String game_console, String game_publisher,String game_developer, String game_franchise,Boolean multiplayer, int player_amount, int review_Score) {
+    public Game_Information(int gameId, String game_name, String game_console, String game_publisher,String game_developer, String game_franchise,Boolean multiplayer, int player_amount, int review_Score, String image_id) {
         GameId = gameId;
         Game_name = game_name;
         Game_console = game_console;
@@ -28,12 +31,15 @@ public class Game_Information {
         Multiplayer = multiplayer;
         Player_amount = player_amount;
         Review_Score = review_Score;
+        Image_ID=image_id;
+
     }
     //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter entitys
 
     public Game_Information(String game_name) {
         Game_name = game_name;
     }
+
 
 
     //GETTERS
@@ -75,6 +81,10 @@ public class Game_Information {
         return Review_Score;
     }
 
+    public String getImage() {
+        return Image_ID;
+    }
+
     //SETTERS
 
     public void setGame_publisher(String game_publisher) {
@@ -113,7 +123,13 @@ public class Game_Information {
         Review_Score = review_Score;
     }
 
+    public void setImage(String image_ID) {
+        Image_ID = image_ID;
+        Image_ID = image_ID;
+    }
+
     //TOSTRING
+
 
     @Override
     public String toString() {
@@ -127,6 +143,7 @@ public class Game_Information {
                 ", Multiplayer=" + Multiplayer +
                 ", Player_amount=" + Player_amount +
                 ", Review_Score=" + Review_Score +
+                ", Image='" + Image_ID + '\'' +
                 '}';
     }
 }
