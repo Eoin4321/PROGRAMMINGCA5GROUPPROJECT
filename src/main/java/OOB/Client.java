@@ -196,20 +196,20 @@ public class Client {
         fileOutputStream.close();
     }
 
-//    public void displaygame(Game_Information game) {
-//        String headers = "Game ID, Name ,Console , Publisher, Developer, Franchise, Multiplayer, Player Amount, Review Score";
-//        System.out.println(headers);
-////        System.out.println("");
-////        System.out.println("****************************************************************************************************");
-//        for(int i = 0; i < headers.length(); i++){
-//            System.out.print("*");
-//        }
-//        System.out.println();
-//        //System.out.println(game.getGameId() + game.getGame_name()+ game.getGame_console()+game.getGame_publisher()+game.getGame_developer()+game.getGame_franchise()+game.getMultiplayer()+game.getPlayer_amount()+ game.getReview_Score());
-//        System.out.printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%d20\t%.2f",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
-//
-//
-//    }
+    public void displaygame(Game_Information game) {
+        String headers = "Game ID, Name ,Console , Publisher, Developer, Franchise, Multiplayer, Player Amount, Review Score";
+        System.out.println(headers);
+//        System.out.println("");
+//        System.out.println("****************************************************************************************************");
+        for(int i = 0; i < headers.length(); i++){
+            System.out.print("*");
+        }
+        System.out.println();
+        //System.out.println(game.getGameId() + game.getGame_name()+ game.getGame_console()+game.getGame_publisher()+game.getGame_developer()+game.getGame_franchise()+game.getMultiplayer()+game.getPlayer_amount()+ game.getReview_Score());
+        System.out.printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%d20\t%.2f",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
+
+
+    }
 
 
 }
