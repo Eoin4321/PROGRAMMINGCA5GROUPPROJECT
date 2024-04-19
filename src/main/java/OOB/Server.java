@@ -157,9 +157,11 @@ class ClientHandler implements Runnable
                 else if(request.substring(0, 1).equals("5"))
                 {
                     Server.sendFile("images/OVERWATCH.jpg");
-                }
+                } else if (request.equals("6")) {
+                    clientSocket.shutdownOutput();
+                    System.out.println("Client Terminated :" + clientNumber);
 
-                else{
+                } else{
                     socketWriter.println("error I'm sorry I don't understand your request");
                     System.out.println("Your input was :"+request);
                     System.out.println("Server message: Invalid request from client.");
@@ -181,6 +183,7 @@ class ClientHandler implements Runnable
             }
         }
         System.out.println("Server: (ClientHandler): Handler for Client " + clientNumber + " is terminating .....");
+
     }
 
 }

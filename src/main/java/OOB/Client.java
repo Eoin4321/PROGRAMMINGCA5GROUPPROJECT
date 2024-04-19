@@ -94,10 +94,10 @@ public class Client {
                     //Parsing the JSON string into a gameInformation object.
 
                     receiveFile("images/Recieved_image_received.jpg");
-                }
-
-
-                else {
+                } else if (userRequest.equals("6")) {
+                    socket.close();
+                    break;
+                } else {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:"+userRequest);
                 }
