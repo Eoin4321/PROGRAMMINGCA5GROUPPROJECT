@@ -106,7 +106,7 @@ public class DAO {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
 
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score) Values(?,?,?,?,?,?,?,?)");
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score) Values(?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         insertStatement.setString(1, game.getGame_name());
         insertStatement.setString(2, game.getGame_console());
         insertStatement.setString(3, game.getGame_publisher());
@@ -117,6 +117,12 @@ public class DAO {
         insertStatement.setDouble(8, game.getReview_Score());
 
         insertStatement.executeUpdate();
+
+        ResultSet results = insertStatement.getGeneratedKeys();
+        if (results.next())
+        {
+            game.setGameId(results.getInt(1));
+        }
     }
 
     //Author Dovydas and Eoin

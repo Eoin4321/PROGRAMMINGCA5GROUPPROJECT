@@ -16,7 +16,7 @@ public class Main{
         //Connecting to database. Will return unable to connect to database if cant connect
         DAO dao =DAO.getInstance();
         System.out.println("Welcome to the Video Game Database!!!");
-        while(menu==true)
+        while(menu)
         {
             System.out.println("Please Select An Option" +
                     "\n1.Get all Entities" +
@@ -109,12 +109,16 @@ public class Main{
             }
             if(choice==8)
             {
-                System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
-                int id= keyboard.nextInt();
-                Game_Information gameJson = dao.getGameById(id);
-                String gamegameJson = JSonConverter.gameToJson(gameJson);
-                System.out.println(gamegameJson);
+                GameToJson(keyboard, dao);
             }
         }
+    }
+
+    private static void GameToJson(Scanner keyboard, DAO dao) throws SQLException {
+        System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
+        int id= keyboard.nextInt();
+        Game_Information gameJson = dao.getGameById(id);
+        String gamegameJson = JSonConverter.gameToJson(gameJson);
+        System.out.println(gamegameJson);
     }
 }
