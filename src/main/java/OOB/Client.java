@@ -66,6 +66,7 @@ public class Client {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
                     displaygame(game);
+                    System.out.println();
                 }
 
                 else if(userRequest.equals("2")) //Display all games
@@ -205,7 +206,8 @@ public class Client {
         }
         System.out.println();
         //System.out.println(game.getGameId() + game.getGame_name()+ game.getGame_console()+game.getGame_publisher()+game.getGame_developer()+game.getGame_franchise()+game.getMultiplayer()+game.getPlayer_amount()+ game.getReview_Score());
-        System.out.printf("%d\t*%s\t%s\t%s\t%s\t%s\t%s\t%d\t%d",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),);
+        System.out.printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%d20\t%.2f",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
+
 
     }
 
