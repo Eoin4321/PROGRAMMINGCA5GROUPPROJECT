@@ -1,37 +1,33 @@
 //Eoin set up the server client connection. Code based on multithread code we did in class.
 package OOB;
-
 import OOB.DTOs.Game_Information;
-
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.Socket;
-import java.time.LocalDateTime;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.*;
-
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
-
 public class Client {
+    //Setting up variables for the input and output for the images.
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
+    //Main method
     public static void main(String[] args) {
+        //Making a new instance of the client class and calling the start method to set up a new client
         Client client = new Client();
         client.start();
     }
 
+    //This method starts the client and will connect with server.
     public void start() {
 
         try (   //New socket to connect to server
                 Socket socket = new Socket("localhost", 8888);
-                // get the socket's input and output streams, and wrap them in writer and readers
+                //get the socket's input and output streams, and wrap them in writer and readers
+                //out sents data to the server while in takes in data.
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
                 BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
+            //Setting up input and output streams to recieve image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream( socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
@@ -40,15 +36,15 @@ public class Client {
             System.out.println("Valid commands are: Type 1 + ID Digit to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
             System.out.println("Please enter a command: ");
             String userRequest = consoleInput.nextLine();
-            // Instantiate (create) a Gson Parser
-            Gson gsonParser = new Gson();
-            boolean endcode=false;
-            while(true&&endcode==false) {
-                // sending the command to the server on the socket
-                out.println(userRequest);      // write the request to socket along with a newline terminator (which is required)
 
+            //Instantiate (create) a Gson Parser
+            Gson gsonParser = new Gson();
+
+            boolean endcode=false;
+            //A while loop which will run until turned off.
+            while(true&&endcode==false) {
+                out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
-                //
                 //COMMAND 1 to Display Entity by Id
                 //If users request is 1
                 if (userRequest.substring(0, 1).equals("1")) {
