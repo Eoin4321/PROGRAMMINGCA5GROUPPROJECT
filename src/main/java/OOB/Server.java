@@ -13,7 +13,6 @@ import java.util.List;
 
 import OOB.DAOs.DAO;
 import OOB.DTOs.Game_Information;
-import com.google.gson.Gson;
 
 
 public class Server {
@@ -130,7 +129,7 @@ class ClientHandler implements Runnable
 
 
                 //If client wants command 1 runs this etc...
-                if (request.charAt(0) == '1')
+                if (request.substring(0, 1).equals("1"))
                 {
                     DAO dao =DAO.getInstance();
                     Game_Information gameJson = dao.getGameById(Integer.parseInt(request.substring(2)));
@@ -140,27 +139,15 @@ class ClientHandler implements Runnable
                 }
                 else if(request.equals("2"))
                 {
+                    System.out.println("Server running command 2");
                     DAO dao =DAO.getInstance();
                     List<Game_Information> games =dao.getAllGames();
                     String gameJson = JSonConverter.gameListToJson(games);
                     socketWriter.println(gameJson);
                     System.out.println("Server Message: JSON string containing list of games sent to client");
                 }
-                else if (request.substring(0, 1).equals("3")) {
-
-                    DAO dao =DAO.getInstance();
-                    Gson gsonParser = new Gson();
-                    Game_Information newGame = new Game_Information();
-                    String json = socketReader.readLine().trim();
-                    System.out.println(json);
-                    newGame = gsonParser.fromJson(json, Game_Information.class);
-                    dao.insertGame(newGame);
-                    String gamegameJson = JSonConverter.gameToJson(newGame);
-                    socketWriter.println(gamegameJson);
-
-
-                }
-                else if(request.substring(0, 1).equals("4")) {
+                else if(request.substring(0, 1).equals("4"))
+                {
                     DAO dao =DAO.getInstance();
                     dao.deleteGameById(Integer.parseInt(request.substring(2)));
                     socketWriter.println("If there was a game associated with this ID it has been deleted.");
@@ -174,14 +161,6 @@ class ClientHandler implements Runnable
                     String image_id = game.getImage();
                     socketWriter.println(image_id);
                     Server.sendFile("images/"+image_id);
-                }
-
-                else if (request.equals("6"))
-                {
-
-                    System.out.println("Client Terminated :" + clientNumber);
-                    clientSocket.shutdownOutput();
-                    clientSocket.shutdownInput();
                 }
 
                 else{
@@ -206,7 +185,6 @@ class ClientHandler implements Runnable
             }
         }
         System.out.println("Server: (ClientHandler): Handler for Client " + clientNumber + " is terminating .....");
-
     }
 
 }
