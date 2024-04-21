@@ -12,6 +12,7 @@ public class Client {
     //Setting up variables for the input and output for the images.
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
+
     //Main method
     public static void main(String[] args) {
         //Making a new instance of the client class and calling the start method to set up a new client
@@ -31,7 +32,7 @@ public class Client {
         ) {
             //Setting up input and output streams to recieve image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream( socket.getOutputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             //Dovydas made the menu look nice
@@ -53,7 +54,7 @@ public class Client {
             Gson gsonParser = new Gson();
 
             //A while loop which will run until turned off.
-            while(true) {
+            while (true) {
                 out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
                 //COMMAND 1 to Display Entity by Id
@@ -70,24 +71,23 @@ public class Client {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
                     displaygame(game);
-                }
-
-                else if(userRequest.equals("2"))
-                {
+                } else if (userRequest.equals("2")) {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-                    List<Game_Information> games =new ArrayList();
+                    List<Game_Information> games = new ArrayList();
                     try {
                         games = gsonParser.fromJson(JsonGameId, List.class);
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    printInfo(games);
+                    for(int i=0;i<games.size();i++)
+                    {
+                        displaygame(games.get(i));
+                    }
                 }
 
                 //AUTHOR LIZA WROTE THIS SECTION OF CODE
                 //EOIN ADDED IN NEW PARAMETER IMAGE
-                else if(userRequest.equals("3"))
-                {
+                else if (userRequest.equals("3")) {
                     Game_Information newGame = new Game_Information();
                     System.out.println("Type in information to insert into database. First name");
                     newGame.setGame_name(consoleInput.nextLine());
@@ -124,34 +124,22 @@ public class Client {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
                     displaygame(game);
-                }
-
-
-                else if(userRequest.substring(0, 1).equals("4"))
-                {
+                } else if (userRequest.substring(0, 1).equals("4")) {
                     //String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
                     //We then convert this JSON to a gameinfo object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
                     //Parsing the JSON string into a gameInformation object.
 
                     System.out.println(in.readLine());
-                }
-
-                else if(userRequest.substring(0, 1).equals("5"))
-                {
-                    receiveFile("images/Recieved_image_"+in.readLine()+"_received.jpg");
-                }
-
-                else if(userRequest.equals("6"))
-                {
+                } else if (userRequest.substring(0, 1).equals("5")) {
+                    receiveFile("images/Recieved_image_" + in.readLine() + "_received.jpg");
+                } else if (userRequest.equals("6")) {
                     socket.close();
                     System.out.println("Client connection closed");
                     break;
-                }
-
-                else {
+                } else {
                     System.out.println("Not a valid user request.");
-                    System.out.println("Current userrequest whicih resulted in error:"+userRequest);
+                    System.out.println("Current userrequest whicih resulted in error:" + userRequest);
                 }
                 //Taking in input
                 consoleInput = new Scanner(System.in);
@@ -167,10 +155,10 @@ public class Client {
 
         System.out.println("Exiting client, Server could still be running");
     }
+
     //METHOD TO RECEIVE FILE
     private static void receiveFile(String fileName)
-            throws Exception
-    {
+            throws Exception {
         int bytes = 0;
         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
 
@@ -188,7 +176,7 @@ public class Client {
 
         // next, read the raw bytes in chunks (buffer size) that make up the image file
         while (size > 0 &&
-                (bytes = dataInputStream.read(buffer, 0,(int)Math.min(buffer.length, size))) != -1) {
+                (bytes = dataInputStream.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
 
             // above, we read a number of bytes from stream to fill the buffer (if there are enough remaining)
             // - the number of bytes we must read is the smallest (min) of: the buffer length and the remaining size of the file
@@ -209,6 +197,7 @@ public class Client {
         System.out.println("Look in the images folder to see the transferred file: winton.png");
         fileOutputStream.close();
     }
+
     //METHOD TO DISPLAY GAME MADE BY DOVYDAS
     //Eoin added in Image parameters.
     public void displaygame(Game_Information game) {
@@ -218,18 +207,18 @@ public class Client {
                         +
                         "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f| %-18s|\n" +
                         "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+",
-                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score(),game.getImage());
+                game.getGameId(), game.getGame_name(), game.getGame_console(), game.getGame_publisher(), game.getGame_developer(), game.getGame_franchise(), game.getMultiplayer(), game.getPlayer_amount(), game.getReview_Score(), game.getImage());
     }
 
-    //DOVYDAS MADE THIS
-    private static void printInfo(List<Game_Information> gameInfo) {
-        if( gameInfo.isEmpty() )
-            System.out.println("There is no Game anymore");
-        else {
-            for (Game_Information Game : gameInfo)
-                System.out.println("Game: " + Game.toString());
-        }
-    }
-
-
+//    //DOVYDAS MADE THIS
+//    private static void printInfo(List<Game_Information> dao) {
+//        if (dao.isEmpty())
+//            System.out.println("There is no Game anymore");
+//        else {
+//            for (Game_Information Game : dao)
+//                System.out.println("Game: " + Game.toString());
+//        }
+//
+//
+//    }
 }
