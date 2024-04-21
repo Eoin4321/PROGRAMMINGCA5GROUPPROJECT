@@ -2,10 +2,6 @@
 
 package OOB.DAOs;
 import OOB.DTOs.Game_Information;
-import com.google.gson.Gson;
-import javax.swing.plaf.nimbus.State;
-import javax.xml.transform.Result;
-import java.net.ConnectException;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -13,11 +9,6 @@ import java.util.List;
 import java.util.Scanner;
 
 public class DAO {
-
-    private String url = "jdbc:mysql://localhost/";
-    private String dbname = "videogames";
-    private String username = "root";
-    private String password = "";
 
     private static DAO instance;
 
@@ -37,6 +28,10 @@ public class DAO {
     public Connection getConnection() {
         try {
             //Making a connection with the database
+            String url = "jdbc:mysql://localhost/";
+            String dbname = "videogames";
+            String username = "root";
+            String password = "";
             Connection conn = DriverManager.getConnection
                     (url + dbname, username, password);
             return conn;
@@ -51,23 +46,23 @@ public class DAO {
     //Author Eoin Hamill wrote this code
     public List<Game_Information> getAllGames() throws SQLException{
         Connection connection = getConnection();
-        List<Game_Information> game =new ArrayList();
+        List<Game_Information> game =new ArrayList<>();
         Statement state = connection.createStatement();
         ResultSet result = state.executeQuery("SELECT * from gameinformation");
 
         while(result.next())
         {
-            Game_Information addinggame = new Game_Information();
-            addinggame.setGameId(result.getInt("GameId"));
-            addinggame.setGame_name(result.getString("Game_name"));
-            addinggame.setGame_console(result.getString("Game_console"));
-            addinggame.setGame_developer(result.getString("Game_developer"));
-            addinggame.setGame_franchise(result.getString("Game_developer"));
-            addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
-            addinggame.setPlayer_amount(result.getInt("Player_amount"));
-            addinggame.setReview_Score(result.getInt("Review_Score"));
-            addinggame.setImage(result.getString("Image_ID"));
-            game.add(addinggame);
+            Game_Information addingGame = new Game_Information();
+            addingGame.setGameId(result.getInt("GameId"));
+            addingGame.setGame_name(result.getString("Game_name"));
+            addingGame.setGame_console(result.getString("Game_console"));
+            addingGame.setGame_developer(result.getString("Game_developer"));
+            addingGame.setGame_franchise(result.getString("Game_developer"));
+            addingGame.setMultiplayer(result.getBoolean("Multiplayer"));
+            addingGame.setPlayer_amount(result.getInt("Player_amount"));
+            addingGame.setReview_Score(result.getInt("Review_Score"));
+            addingGame.setImage(result.getString("Image_ID"));
+            game.add(addingGame);
 
         }
         connection.close();
@@ -76,7 +71,6 @@ public class DAO {
 
     //Author Eoin Hamill wrote this code
     public Game_Information getGameById(int id) throws SQLException {
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         Statement state = connection.createStatement();
         ResultSet result = state.executeQuery("SELECT * FROM gameinformation WHERE GAMEId = "+id);
@@ -99,7 +93,6 @@ public class DAO {
 
     //AUTHOR Eoin Hamill wrote this code
     public void deleteGameById(int id) throws SQLException {
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         PreparedStatement deleteStatement = connection.prepareStatement("DELETE FROM gameinformation WHERE GAMEId = "+id);
         deleteStatement.executeUpdate();
@@ -110,7 +103,6 @@ public class DAO {
     //Liza added in the generated key code
     //method to add a game
     public void insertGame(Game_Information game) throws SQLException {
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score,Image_ID) Values(?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         insertStatement.setString(1, game.getGame_name());
@@ -134,12 +126,12 @@ public class DAO {
 
     //Author Dovydas and Eoin
     public void updateGameInfo(int id, Game_Information game) throws SQLException {
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
 
-        PreparedStatement insertStatement = connection.prepareStatement("UPDATE gameinformation \n" +
-                "SET Game_name =?, Game_console=?,Game_developer=?,Game_franchise=?,Game_publisher=?,Multiplayer=?,Player_amount=?,Review_Score=?,Image_ID=?\n" +
-                "WHERE GameID =?");
+        PreparedStatement insertStatement = connection.prepareStatement("""
+                UPDATE gameinformation\s
+                SET Game_name =?, Game_console=?,Game_developer=?,Game_franchise=?,Game_publisher=?,Multiplayer=?,Player_amount=?,Review_Score=?,Image_ID=?
+                WHERE GameID =?""");
         insertStatement.setString(1, game.getGame_name());
         insertStatement.setString(2, game.getGame_console());
         insertStatement.setString(3, game.getGame_publisher());
@@ -158,32 +150,31 @@ public class DAO {
 
 
     //AUTHOR EOIN HAMILL wrote this entire function
-    public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gamenameComparator) throws SQLException{
+    public List<Game_Information> gameInformationBasedOnName(Comparator<Game_Information> gameNameComparator) throws SQLException{
         Scanner kb = new Scanner(System.in);
         System.out.println("Enter Name You would like to filter by");
         String filter=kb.nextLine();
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
-        List<Game_Information> game =new ArrayList();
+        List<Game_Information> game =new ArrayList<>();
         Statement state = connection.createStatement();
         ResultSet result = state.executeQuery("SELECT * from gameinformation");
 
         while(result.next())
         {
-            Game_Information addinggame = new Game_Information();
-            addinggame.setGameId(result.getInt("GameId"));
-            addinggame.setGame_name(result.getString("Game_name"));
-            addinggame.setGame_console(result.getString("Game_console"));
-            addinggame.setGame_developer(result.getString("Game_developer"));
-            addinggame.setGame_franchise(result.getString("Game_developer"));
-            addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
-            addinggame.setPlayer_amount(result.getInt("Player_amount"));
-            addinggame.setReview_Score(result.getInt("Review_Score"));
-            addinggame.setImage(result.getString("Image_ID"));
+            Game_Information addingGame = new Game_Information();
+            addingGame.setGameId(result.getInt("GameId"));
+            addingGame.setGame_name(result.getString("Game_name"));
+            addingGame.setGame_console(result.getString("Game_console"));
+            addingGame.setGame_developer(result.getString("Game_developer"));
+            addingGame.setGame_franchise(result.getString("Game_developer"));
+            addingGame.setMultiplayer(result.getBoolean("Multiplayer"));
+            addingGame.setPlayer_amount(result.getInt("Player_amount"));
+            addingGame.setReview_Score(result.getInt("Review_Score"));
+            addingGame.setImage(result.getString("Image_ID"));
 
-            if(gamenameComparator.compare(addinggame, new Game_Information(filter))==0)
+            if(gameNameComparator.compare(addingGame, new Game_Information(filter))==0)
             {
-                game.add(addinggame);
+                game.add(addingGame);
             }
 
 

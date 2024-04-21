@@ -5,19 +5,18 @@ import java.util.List;
 import java.util.Scanner;
 import OOB.DAOs.DAO;
 import OOB.DTOs.Game_Information;
-import org.ietf.jgss.GSSManager;
 
 public class Main{
     public static void main(String[] args) throws SQLException {
         //Creating keyboard
         Scanner keyboard = new Scanner(System.in);
+        Game_Information addingGame = new Game_Information();
         //Creating Variables
-        boolean menu = true;
         int choice;
         //Connecting to database. Will return unable to connect to database if cant connect
         DAO dao =DAO.getInstance();
         System.out.println("Welcome to the Video Game Database!!!");
-        while(menu==true)
+        while(true)
         {
             choice = mainMenu(keyboard);
 
@@ -37,16 +36,16 @@ public class Main{
             else if(choice==3) {
                 deleteGameById(keyboard, dao);
             }
-            //AUTHOR DOVYDAS JAKCUIUNAS
+            //AUTHOR DOVYDAS JAKUCIUNAS
             else if(choice==4)
             {
-                addNewGame(keyboard, dao);
+                addNewGame(keyboard, dao, addingGame);
 
             }
-            //AUTHOR DOVYDAS JAKCUIUNAS
+            //AUTHOR DOVYDAS JAKUCIUNAS
             else if(choice==5)
             {
-                updateGameById(keyboard, dao);
+                updateGameById(keyboard, dao, addingGame);
             }
             else if(choice==6)
             {
@@ -78,8 +77,8 @@ public class Main{
         System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
         int id= keyboard.nextInt();
         Game_Information gameJson = dao.getGameById(id);
-        String gamegameJson = JSonConverter.gameToJson(gameJson);
-        System.out.println(gamegameJson);
+        String gameGameJson = JSonConverter.gameToJson(gameJson);
+        System.out.println(gameGameJson);
     }
 
     private static void gameListToJson(DAO dao) throws SQLException {
@@ -90,35 +89,32 @@ public class Main{
 
     private static void findGameUsingFilter(DAO dao) throws SQLException {
         System.out.println("CHOICE 6");
-        Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
-        System.out.println(dao.gameInformationBasedOnName(gamenameComparator));
+        Comparator<Game_Information> gameNameComparator = Comparator.comparing(Game_Information::getGame_name);
+        System.out.println(dao.gameInformationBasedOnName(gameNameComparator));
     }
 
-    private static void updateGameById(Scanner keyboard, DAO dao) throws SQLException {
+    private static void updateGameById(Scanner keyboard, DAO dao, Game_Information addingGame) throws SQLException {
         System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
         int id= keyboard.nextInt();
-        Game_Information game= dao.getGameById(id);
-        Game_Information addinggame = new Game_Information();
         keyboard.nextLine();
         System.out.println("Type in information to insert into database. First name");
-        addinggame.setGame_name(keyboard.nextLine());
+        addingGame.setGame_name(keyboard.nextLine());
         System.out.println("Console");
-        addinggame.setGame_console(keyboard.nextLine());
+        addingGame.setGame_console(keyboard.nextLine());
         System.out.println("Developer");
-        addinggame.setGame_developer(keyboard.nextLine());
+        addingGame.setGame_developer(keyboard.nextLine());
         System.out.println("Publisher");
-        addinggame.setGame_publisher(keyboard.nextLine());
+        addingGame.setGame_publisher(keyboard.nextLine());
         System.out.println("Franchise");
-        addinggame.setGame_franchise(keyboard.nextLine());
-        System.out.println("Multiplayer");
-        addinggame.setMultiplayer(keyboard.nextBoolean());
-        System.out.println("Playercount");
-        addinggame.setPlayer_amount(Integer.parseInt(String.valueOf(keyboard.nextInt())));
-
-
+        addingGame.setGame_franchise(keyboard.nextLine());
+        System.out.println("Multiplayer(True or False)");
+        addingGame.setMultiplayer(keyboard.nextBoolean());
+        System.out.println("How many Can Play?");
+        addingGame.setPlayer_amount(Integer.parseInt(String.valueOf(keyboard.nextInt())));
         System.out.println("Image");
-        addinggame.setImage(keyboard.next());
-        dao.updateGameInfo(id,addinggame);
+        addingGame.setImage(keyboard.next());
+
+        dao.updateGameInfo(id,addingGame);
     }
 
     private static void searchGameById(Scanner keyboard, DAO dao) throws SQLException {
@@ -134,8 +130,8 @@ public class Main{
         System.out.println("Game Deleted!!!!");
     }
 
-    private static void addNewGame(Scanner keyboard, DAO dao) throws SQLException {
-        Game_Information addingGame = new Game_Information();
+    private static void addNewGame(Scanner keyboard, DAO dao, Game_Information addingGame) throws SQLException {
+        
         System.out.println();
         keyboard.nextLine();
 
@@ -170,6 +166,8 @@ public class Main{
         System.out.println("Review of game: (Whole number from 0-100)");
         int reviewIn = keyboard.nextInt();
         addingGame.setReview_Score(reviewIn);
+
+        System.out.println("Image");
 
         dao.insertGame(addingGame);
     }

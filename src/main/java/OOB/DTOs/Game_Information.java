@@ -34,7 +34,7 @@ public class Game_Information {
         Image_ID=image_id;
 
     }
-    //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter entitys
+    //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter Entities
 
     public Game_Information(String game_name) {
         Game_name = game_name;
@@ -125,10 +125,9 @@ public class Game_Information {
 
     public void setImage(String image_ID) {
         Image_ID = image_ID;
-        Image_ID = image_ID;
     }
 
-    //TOSTRING
+    //toString Method - Basic
 
 
     @Override

@@ -1,4 +1,4 @@
-//Eoin set up the server client connection. Code based on multithread code we did in class.
+//Eoin set up the server client connection. Code based on multithreading code we did in class.
 package OOB;
 import OOB.DTOs.Game_Information;
 import java.io.*;
@@ -9,8 +9,6 @@ import OOB.example.JSonConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 public class Client {
-    //Setting up variables for the input and output for the images.
-    private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
 
     //Main method
@@ -26,13 +24,14 @@ public class Client {
         try (   //New socket to connect to server
                 Socket socket = new Socket("localhost", 8888);
                 //get the socket's input and output streams, and wrap them in writer and readers
-                //out sents data to the server while in takes in data.
+                //out sets data to the server while in takes in data.
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
-            //Setting up input and output streams to recieve image data.
+            //Setting up input and output streams to receive image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            //Setting up variables for the input and output for the images.
+            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             //Dovydas made the menu look nice
@@ -57,11 +56,11 @@ public class Client {
             while (true) {
                 out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
-                //COMMAND 1 to Display Entity by Id
+                //COMMAND 1 to Display Entity by ID
                 //If users request is 1
                 if (userRequest.substring(0, 1).equals("1")) {
-                    String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-                    //We then convert this JSON to a gameinfo object
+                    String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
+                    //We then convert this JSON to a game info object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
                     Game_Information game = null;
                     //Parsing the JSON string into a gameInformation object.
@@ -70,9 +69,10 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
+                    assert game != null;
                     displaygame(game);
                 } else if (userRequest.equals("2")) {
-                    String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
+                    String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
                     List<Game_Information> games = new ArrayList();
                     try {
                         games = gsonParser.fromJson(JsonGameId, List.class);
@@ -101,7 +101,7 @@ public class Client {
                     newGame.setGame_franchise(consoleInput.nextLine());
                     System.out.println("Multiplayer");
                     newGame.setMultiplayer(Boolean.valueOf(consoleInput.nextLine()));
-                    System.out.println("Playercount");
+                    System.out.println("Player count");
                     newGame.setPlayer_amount(Integer.parseInt(consoleInput.nextLine()));
                     System.out.println("Review Score");
                     newGame.setReview_Score(Integer.parseInt(consoleInput.nextLine()));
@@ -125,8 +125,8 @@ public class Client {
                     }
                     displaygame(game);
                 } else if (userRequest.substring(0, 1).equals("4")) {
-                    //String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-                    //We then convert this JSON to a gameinfo object
+                    //String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
+                    //We then convert this JSON to a game info object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
                     //Parsing the JSON string into a gameInformation object.
 
@@ -139,7 +139,7 @@ public class Client {
                     break;
                 } else {
                     System.out.println("Not a valid user request.");
-                    System.out.println("Current userrequest whicih resulted in error:" + userRequest);
+                    System.out.println("Current user request which resulted in error:" + userRequest);
                 }
                 //Taking in input
                 consoleInput = new Scanner(System.in);
