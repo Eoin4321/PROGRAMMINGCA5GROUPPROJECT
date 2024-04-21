@@ -2,10 +2,14 @@
 package OOB;
 import OOB.DTOs.Game_Information;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+import org.ietf.jgss.GSSManager;
+
 public class Client {
     //Setting up variables for the input and output for the images.
     private static DataOutputStream dataOutputStream = null;
@@ -57,19 +61,21 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    System.out.println("Your game is " + game);
+                    displaygame(game);
                 }
 
                 else if(userRequest.equals("2"))
                 {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-                    List<Game_Information> games =new ArrayList();
+
                     try {
-                        games = gsonParser.fromJson(JsonGameId, List.class);
+                        Type collectionClient = new TypeToken<Collection<Game_Information>>(){}.getType();      //Created type object of Game_Information Collections- Making the empty variable a base of Game_Information
+                        Collection<Game_Information> game = gsonParser.fromJson(JsonGameId, collectionClient);  //Filling in the Collection with allocated variables from the server
+                        displayGameList((List<Game_Information>) game);
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    System.out.println(games);
+
                 }
 
                 else if(userRequest.substring(0, 1).equals("4"))
@@ -153,5 +159,29 @@ public class Client {
 
         System.out.println("Look in the images folder to see the transferred file: winton.png");
         fileOutputStream.close();
+    }
+
+    public void displaygame(Game_Information game) {
+
+
+        System.out.println(String.format("%-9s%-20s%-10s%-15s%-15s%-15s%-12s%-15s%-10s",
+                "Game ID", "Name", "Console", "Publisher", "Developer", "Franchise", "Multiplayer", "Player Amount", "Review Score") +
+                "\n" +
+                "***************************************************************************************************************************\n" +
+                String.format("%-9d%-20s%-10s%-15s%-15s%-15s%-12b%-15d%-10.2f",
+                        game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score() ));
+        System.out.println();
+
+
+    }
+
+    public void displayGameList(List<Game_Information> game) {
+
+        for (int i = 0; i < game.size(); i++) {
+            displaygame(game.get(i));
+        }
+
+
+
     }
 }
