@@ -2,15 +2,15 @@
 package OOB;
 import OOB.DTOs.Game_Information;
 import java.io.*;
-import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
+
+import OOB.example.JSonConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
-import com.google.gson.reflect.TypeToken;
-
-
 public class Client {
+    //Setting up variables for the input and output for the images.
+    private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
     //Main method
     public static void main(String[] args) {
@@ -27,39 +27,35 @@ public class Client {
                 //get the socket's input and output streams, and wrap them in writer and readers
                 //out sents data to the server while in takes in data.
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
             //Setting up input and output streams to recieve image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
-            //Setting up variables for the input and output for the images.
+            dataOutputStream = new DataOutputStream( socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             Scanner consoleInput = new Scanner(System.in);
-
+            System.out.print("""
+                    Valid commands are:
+                    Type 1 "+ID": To Display Entity by Id\s
+                    Type 2: Display all Entities
+                    Type 3: Add an Game to DataBase
+                    Type 4: Delete Game Within The Database\s
+                    Type 5 "+ID": To Get Game Image \s
+                    Type 6: Exit the Client""");
+            System.out.println("Please enter a command: ");
+            String userRequest = consoleInput.nextLine();
 
             //Instantiate (create) a Gson Parser
             Gson gsonParser = new Gson();
 
             //A while loop which will run until turned off.
             while(true) {
-                System.out.println("+--------------------------------------------------------------------+");
-                System.out.print("""
-                    Valid commands are:
-                    Type 1: ID Digit to Display Entity by Id\s
-                    Type 2: Display all Entities
-                    Type 3: Add an Game to DataBase
-                    Type 4: Delete Game Within The Database\s
-                    Type 5: Get Game Image List\s
-                    Type 6: Exit the Server""");
-                System.out.println("Please enter a command: ");
-                String userRequest = consoleInput.nextLine();
-                System.out.println("+--------------------------------------------------------------------+");
-
                 out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
                 //COMMAND 1 to Display Entity by Id
                 //If users request is 1
-                if (userRequest.charAt(0) == '1') {
+                if (userRequest.substring(0, 1).equals("1")) {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
                     //We then convert this JSON to a gameinfo object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
@@ -70,22 +66,63 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    displaygame(game);
+                    System.out.println("Your game is " + game);
                 }
 
                 else if(userRequest.equals("2"))
                 {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
-
+                    List<Game_Information> games =new ArrayList();
                     try {
-                        Type collectionClient = new TypeToken<Collection<Game_Information>>(){}.getType();      //Created type object of Game_Information Collections- Making the empty variable a base of Game_Information
-                        Collection<Game_Information> game = gsonParser.fromJson(JsonGameId, collectionClient);  //Filling in the Collection with allocated variables from the server
-                        displayGameList((List<Game_Information>) game);
+                        games = gsonParser.fromJson(JsonGameId, List.class);
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-
+                    System.out.println(games);
                 }
+
+                //AUTHOR LIZA WROTE THIS SECTION OF CODE
+                //EOIN ADDED IN NEW PARAMETER IMAGE
+                else if(userRequest.equals("3"))
+                {
+                    Game_Information newGame = new Game_Information();
+                    System.out.println("Type in information to insert into database. First name");
+                    newGame.setGame_name(consoleInput.nextLine());
+                    System.out.println("Console");
+                    newGame.setGame_console(consoleInput.nextLine());
+                    System.out.println("Developer");
+                    newGame.setGame_developer(consoleInput.nextLine());
+                    System.out.println("Publisher");
+                    newGame.setGame_publisher(consoleInput.nextLine());
+                    System.out.println("Franchise");
+                    newGame.setGame_franchise(consoleInput.nextLine());
+                    System.out.println("Multiplayer");
+                    newGame.setMultiplayer(Boolean.valueOf(consoleInput.nextLine()));
+                    System.out.println("Playercount");
+                    newGame.setPlayer_amount(Integer.parseInt(consoleInput.nextLine()));
+                    System.out.println("Review Score");
+                    newGame.setReview_Score(Integer.parseInt(consoleInput.nextLine()));
+                    System.out.println("Image");
+                    newGame.setImage(consoleInput.nextLine());
+
+
+                    System.out.println(newGame.toString());
+                    System.out.println("BREAK");
+                    String gameStr = JSonConverter.gameToJson(newGame);
+                    System.out.println(gameStr);
+
+                    out.println(gameStr);
+                    Game_Information game = null;
+                    try {
+                        String JsonGameId = in.readLine();
+                        System.out.println(JsonGameId);
+                        game = gsonParser.fromJson(JsonGameId, Game_Information.class);
+                    } catch (JsonSyntaxException ex) {
+                        System.out.println("Jason syntax error encountered. " + ex);
+                    }
+                    displaygame(game);
+                }
+
 
                 else if(userRequest.substring(0, 1).equals("4"))
                 {
@@ -113,7 +150,11 @@ public class Client {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:"+userRequest);
                 }
-
+                //Taking in input
+                consoleInput = new Scanner(System.in);
+                System.out.println("Valid commands are: Type 1 to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
+                System.out.println("Please enter a command: ");
+                userRequest = consoleInput.nextLine();
             }
         } catch (IOException e) {
             System.out.println("Client message: IOException: " + e);
@@ -165,29 +206,22 @@ public class Client {
         System.out.println("Look in the images folder to see the transferred file: winton.png");
         fileOutputStream.close();
     }
-
+    //METHOD TO DISPLAY GAME MADE BY DOVYDAS
+    //Eoin added in Image parameters.
     public void displaygame(Game_Information game) {
-
-
-        System.out.printf("+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
-                "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score |\n" +
-                "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n"
-                +
-                        "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f|\n" +
-                        "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+",
-                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
-        System.out.println();
-
-
-    }
-
-    public void displayGameList(List<Game_Information> game) {
-
-        for (int i = 0; i < game.size(); i++) {
-            displaygame(game.get(i));
+        String headers = "Game ID, Name ,Console , Publisher, Developer, Franchise, Multiplayer, Player Amount, Review Score";
+        System.out.println(headers);
+//        System.out.println("");
+//        System.out.println("****************************************************************************************************");
+        for(int i = 0; i < headers.length(); i++){
+            System.out.print("*");
         }
-
+        System.out.println();
+        //System.out.println(game.getGameId() + game.getGame_name()+ game.getGame_console()+game.getGame_publisher()+game.getGame_developer()+game.getGame_franchise()+game.getMultiplayer()+game.getPlayer_amount()+ game.getReview_Score());
+        System.out.printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%d20\t%.2f\t%s",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score(),game.getImage());
 
 
     }
+
+
 }

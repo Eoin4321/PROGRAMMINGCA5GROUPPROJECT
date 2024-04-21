@@ -1,18 +1,14 @@
-
+//Eoin connected the server and Cleint based on code we did in class.
 package OOB;
-
 import OOB.DTOs.Game_Information;
 import OOB.example.JSonConverter;
-
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
-
 import OOB.DAOs.DAO;
-import OOB.DTOs.Game_Information;
+import com.google.gson.Gson;
 
 
 public class Server {
@@ -146,6 +142,20 @@ class ClientHandler implements Runnable
                     socketWriter.println(gameJson);
                     System.out.println("Server Message: JSON string containing list of games sent to client");
                 }
+                //LIZA WROTE THIS CODE
+                else if (request.substring(0, 1).equals("3")) {
+
+                    DAO dao =DAO.getInstance();
+                    Gson gsonParser = new Gson();
+                    Game_Information newGame = new Game_Information();
+                    String json = socketReader.readLine().trim();
+                    System.out.println(json);
+                    newGame = gsonParser.fromJson(json, Game_Information.class);
+                    dao.insertGame(newGame);
+                    String gamegameJson = JSonConverter.gameToJson(newGame);
+                    socketWriter.println(gamegameJson);
+                }
+                //Eoin wrote this code. Talked it through with Dovydas in class on how to do it.
                 else if(request.substring(0, 1).equals("4"))
                 {
                     DAO dao =DAO.getInstance();
@@ -153,7 +163,7 @@ class ClientHandler implements Runnable
                     socketWriter.println("If there was a game associated with this ID it has been deleted.");
                     System.out.println("Server Message: JSON sent to client.");
                 }
-
+                //@Author Eoin
                 else if(request.substring(0, 1).equals("5"))
                 {
                     DAO dao =DAO.getInstance();

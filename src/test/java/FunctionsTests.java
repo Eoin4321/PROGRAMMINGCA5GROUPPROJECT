@@ -13,6 +13,10 @@ import java.util.List;
 public class FunctionsTests {
 
     DAO dao;
+
+    //Derrick wrote this line of code in class
+    //Before each test it runs this. This sets up our dao so we dont have to include it
+    //For each test
     @BeforeEach
     public void setUP()
     {
@@ -20,6 +24,9 @@ public class FunctionsTests {
     }
 
 
+    //Eoin wrote this test to test if the get all games returns the correct amount of
+    //games which should be 10 at the start of running the program as long as there were no
+    //changes to the database.
     @Test
     void function1true() throws SQLException {
         List<Game_Information> game =new ArrayList();
