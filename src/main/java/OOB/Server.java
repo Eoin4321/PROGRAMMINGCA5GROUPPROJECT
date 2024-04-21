@@ -1,4 +1,5 @@
-//Eoin connected the server and Cleint based on code we did in class.
+//Eoin connected the server and Client based on code we did in class.
+//Dovydas helped troubleshoot issue
 package OOB;
 import OOB.DTOs.Game_Information;
 import OOB.example.JSonConverter;
@@ -12,34 +13,41 @@ import com.google.gson.Gson;
 
 
 public class Server {
+    //Setting up Dataoutput and input stream which will be used to send images from the server to the client
     private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
 
+    //Setting the server port number. Its final as it does not change
     final int SERVER_PORT_NUMBER = 8888;
 
+    //making the server
     public static void main(String[] args) throws IOException {
         Server server = new Server();
         server.start();
     }
 
     public void start() throws IOException {
-
+        //Creating server and client socket
         ServerSocket serverSocket =null;
         Socket clientSocket =null;
         try {
+            //Assigning the socket to the server port number
             serverSocket = new ServerSocket(SERVER_PORT_NUMBER);
             System.out.println("Server has started.");
             int clientNumber = 0;  //assigning a number to the client
             while (true) {
                 System.out.println("Server: Listening/waiting for connections on port ..." + SERVER_PORT_NUMBER);
+                //Accepting an client connection to the server socket
                 clientSocket = serverSocket.accept();
+                //+1 on client number to keep track of clients.
                 clientNumber++;
                 System.out.println("Server: Listening for connections on port ..." + SERVER_PORT_NUMBER);
                 System.out.println("Server: Client " + clientNumber + " has connected.");
                 System.out.println("Server: Port number of remote client: " + clientSocket.getPort());
                 System.out.println("Server: Port number of the socket used to talk with client " + clientSocket.getLocalPort());
 
-
+                //Setting up the data input stream which will let the server take inputs from the client
+                //The output stream allows the server to send data to the client
                 dataInputStream = new DataInputStream(clientSocket.getInputStream());
                 dataOutputStream = new DataOutputStream( clientSocket.getOutputStream());
                 //Making a clienthandler for the client request.
@@ -79,15 +87,15 @@ public class Server {
         File file = new File(path);
         FileInputStream fileInputStream = new FileInputStream(file);
 
-        // send the length (in bytes) of the file to the server
+        // Sending the lenght in bytes to the client
         dataOutputStream.writeLong(file.length());
 
-        // Here we break file into chunks
+        // Breaking the file into chunks.
         byte[] buffer = new byte[4 * 1024]; // 4 kilobyte buffer
 
         // read bytes from file into the buffer until buffer is full or we reached end of file
         while ((bytes = fileInputStream.read(buffer))!= -1) {
-            // Send the buffer contents to Server Socket, along with the count of the number of bytes
+            // Send the buffer contents to the client Socket, along with the count of the number of bytes
             dataOutputStream.write(buffer, 0, bytes);
             dataOutputStream.flush();   // force the data into the stream
         }
@@ -96,6 +104,7 @@ public class Server {
     }
 }
 
+
 class ClientHandler implements Runnable
 {
     BufferedReader socketReader;
@@ -103,13 +112,16 @@ class ClientHandler implements Runnable
     Socket clientSocket;
     final int clientNumber;
 
-    // Constructor
+   //Client handler
+    //Constructor
     public ClientHandler(Socket clientSocket, int clientNumber) {
-        this.clientSocket = clientSocket;  // store socket for closing later
+        this.clientSocket = clientSocket;  // This stores the connection to the client
         this.clientNumber = clientNumber;  // ID number that we are assigning to this client
+        //everytime a new client is made it is ++ so its a different number for each client.
         try {
-            // assign to fields
+            // The socket writer allows the server to send data to the client
             this.socketWriter = new PrintWriter(clientSocket.getOutputStream(), true);
+            //The socket reader allows the server to read data from the client
             this.socketReader = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -125,14 +137,20 @@ class ClientHandler implements Runnable
 
 
                 //If client wants command 1 runs this etc...
+                //Command 1 by Eoin. Get Game Info based on ID
                 if (request.substring(0, 1).equals("1"))
                 {
                     DAO dao =DAO.getInstance();
+                    //Running method to get gamebyID. User types in ID after "1 " so we begin INDEX at 2
                     Game_Information gameJson = dao.getGameById(Integer.parseInt(request.substring(2)));
+                    //Assigning JSON to string to send back to client
                     String gamegameJson = JSonConverter.gameToJson(gameJson);
+                    //Writing to socket the JSON so the client can recieve it
                     socketWriter.println(gamegameJson);
                     System.out.println("Server Message: JSON sent to client.");
                 }
+                //Command 2 to display all by Eoin
+                //This command sends back a JSON of a gamelist with all the data on it
                 else if(request.equals("2"))
                 {
                     System.out.println("Server running command 2");
@@ -155,7 +173,8 @@ class ClientHandler implements Runnable
                     String gamegameJson = JSonConverter.gameToJson(newGame);
                     socketWriter.println(gamegameJson);
                 }
-                //Eoin wrote this code. Talked it through with Dovydas in class on how to do it.
+                //Author Dovydas
+                // talked it through with Eoin In class.
                 else if(request.substring(0, 1).equals("4"))
                 {
                     DAO dao =DAO.getInstance();
@@ -164,12 +183,17 @@ class ClientHandler implements Runnable
                     System.out.println("Server Message: JSON sent to client.");
                 }
                 //@Author Eoin
+                //This command gets image based on ID
                 else if(request.substring(0, 1).equals("5"))
                 {
                     DAO dao =DAO.getInstance();
+                    //So I use the get game Information by ID to get the game the user is searching for
                     Game_Information game = dao.getGameById(Integer.parseInt(request.substring(2)));
+                    //assigning the id to a string
                     String image_id = game.getImage();
+                    //I print this image name to a string and send it back to the client so they can use it for naming the file
                     socketWriter.println(image_id);
+                    //Running the send file method
                     Server.sendFile("images/"+image_id);
                 }
 
