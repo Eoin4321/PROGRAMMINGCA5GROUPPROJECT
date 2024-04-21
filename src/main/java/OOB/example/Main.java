@@ -10,17 +10,17 @@ public class Main{
     public static void main(String[] args) throws SQLException {
         //Creating keyboard
         Scanner keyboard = new Scanner(System.in);
-        Game_Information addingGame = new Game_Information();
         //Creating Variables
+        boolean menu = true;
         int choice;
         //Connecting to database. Will return unable to connect to database if cant connect
         DAO dao =DAO.getInstance();
         System.out.println("Welcome to the Video Game Database!!!");
-        while(true)
+        while(menu==true)
         {
             choice = mainMenu(keyboard);
 
-            //THis will run function 1
+            //This is our menu which will call methods based on input.
             //Author of Function 1 Eoin Hamill
             //Helped with by Dovydas. Helped troubleshoot why database was not connecting
             if(choice==1)
@@ -36,17 +36,18 @@ public class Main{
             else if(choice==3) {
                 deleteGameById(keyboard, dao);
             }
-            //AUTHOR DOVYDAS JAKUCIUNAS
+            //AUTHOR DOVYDAS JAKCUIUNAS
             else if(choice==4)
             {
-                addNewGame(keyboard, dao, addingGame);
+                addNewGame(keyboard, dao);
 
             }
-            //AUTHOR DOVYDAS JAKUCIUNAS
+            //AUTHOR DOVYDAS JAKCUIUNAS
             else if(choice==5)
             {
-                updateGameById(keyboard, dao, addingGame);
+                updateGameById(keyboard, dao);
             }
+            //Author Eoin Hamill
             else if(choice==6)
             {
                 findGameUsingFilter(dao);
@@ -72,66 +73,98 @@ public class Main{
 
         }
     }
-
+    //Dovydas refactored code to methods to make it look better and easier to understand.
+    //AUTHOR EOIN HAMILL wrote this code.
+    //This method converts a Game_information object to json and assigns it to a string and outputs that string
     private static void gameToJsonByID(Scanner keyboard, DAO dao) throws SQLException {
+        //Taking in user input
         System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
         int id= keyboard.nextInt();
+        //making a new game-information object which = the method which gets game by ID. Giving in the user inputted ID.
         Game_Information gameJson = dao.getGameById(id);
-        String gameGameJson = JSonConverter.gameToJson(gameJson);
-        System.out.println(gameGameJson);
+        //ASsigning the JSON to a String
+        String gamegameJson = JSonConverter.gameToJson(gameJson);
+        //Printing JSON
+        System.out.println(gamegameJson);
     }
 
+    //AUTHOR EOIN HAMILL wrote this code
+    //This method converts a list of games to JSON and outputs that JSON which is assigned to a string
     private static void gameListToJson(DAO dao) throws SQLException {
+        //Setting up a list of games and call the get all games method to fill the list
         List<Game_Information> game = dao.getAllGames();
+        //Assign the String to a JSON which I put my lists of games into which returns a JSON
         String gameJson = JSonConverter.gameListToJson(game);
+        //Outputting Json
         System.out.println(gameJson);
     }
 
+    //EOIN HAMILL wrote this code.
+    //This method finds a game based on a comparater
     private static void findGameUsingFilter(DAO dao) throws SQLException {
         System.out.println("CHOICE 6");
-        Comparator<Game_Information> gameNameComparator = Comparator.comparing(Game_Information::getGame_name);
-        System.out.println(dao.gameInformationBasedOnName(gameNameComparator));
+        //Making a comparater which compares game information names. returns 0 if equals
+        Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
+        //Calling method and printing results.
+        System.out.println(dao.gameInformationBasedOnName(gamenameComparator));
     }
 
-    private static void updateGameById(Scanner keyboard, DAO dao, Game_Information addingGame) throws SQLException {
+
+    //Eoin and Dovydas made this
+    //This method allows the user to update game based on ID.
+    //The user inputs ID they want to change and then inputs data which will then be applied to the ID they requested to change
+    private static void updateGameById(Scanner keyboard, DAO dao) throws SQLException {
         System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
         int id= keyboard.nextInt();
+        //Making a new game which the data will be assigned to.
+        //This new game will be sent through the method update game.
+        Game_Information game= dao.getGameById(id);
+        Game_Information addinggame = new Game_Information();
         keyboard.nextLine();
         System.out.println("Type in information to insert into database. First name");
-        addingGame.setGame_name(keyboard.nextLine());
+        addinggame.setGame_name(keyboard.nextLine());
         System.out.println("Console");
-        addingGame.setGame_console(keyboard.nextLine());
+        addinggame.setGame_console(keyboard.nextLine());
         System.out.println("Developer");
-        addingGame.setGame_developer(keyboard.nextLine());
+        addinggame.setGame_developer(keyboard.nextLine());
         System.out.println("Publisher");
-        addingGame.setGame_publisher(keyboard.nextLine());
+        addinggame.setGame_publisher(keyboard.nextLine());
         System.out.println("Franchise");
-        addingGame.setGame_franchise(keyboard.nextLine());
-        System.out.println("Multiplayer(True or False)");
-        addingGame.setMultiplayer(keyboard.nextBoolean());
-        System.out.println("How many Can Play?");
-        addingGame.setPlayer_amount(Integer.parseInt(String.valueOf(keyboard.nextInt())));
+        addinggame.setGame_franchise(keyboard.nextLine());
+        System.out.println("Multiplayer");
+        addinggame.setMultiplayer(keyboard.nextBoolean());
+        System.out.println("Playercount");
+        addinggame.setPlayer_amount(Integer.parseInt(String.valueOf(keyboard.nextInt())));
         System.out.println("Image");
-        addingGame.setImage(keyboard.next());
-
-        dao.updateGameInfo(id,addingGame);
+        //Buffer as it wouldnt take final input
+        keyboard.nextLine();
+        addinggame.setImage(keyboard.nextLine());
+        //Sending game information to the updategameinfo method which will update based on changes requested.
+        dao.updateGameInfo(id,addinggame);
     }
 
+    //Author Eoin and Dovydas
+    //This method searchs for a game and displays it based on ID
     private static void searchGameById(Scanner keyboard, DAO dao) throws SQLException {
         System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
         int id= keyboard.nextInt();
+        //Takes in ID and outputs results
         System.out.println(dao.getGameById(id));
     }
 
+    //Author eoin and Dovydas
     private static void deleteGameById(Scanner keyboard, DAO dao) throws SQLException {
         System.out.println("TYPE IN ID YOU WANT TO DELETE ");
+        //Takes in ID and send it to the method which deletes a game
         int id= keyboard.nextInt();
         dao.deleteGameById(id);
         System.out.println("Game Deleted!!!!");
     }
 
-    private static void addNewGame(Scanner keyboard, DAO dao, Game_Information addingGame) throws SQLException {
-        
+    //Method to add a new game.
+    //Author Dovydas
+    private static void addNewGame(Scanner keyboard, DAO dao) throws SQLException {
+        Game_Information addingGame = new Game_Information();
         System.out.println();
         keyboard.nextLine();
 
@@ -163,15 +196,20 @@ public class Main{
         int playerIn = keyboard.nextInt();
         addingGame.setPlayer_amount(playerIn);
 
-        System.out.println("Review of game: (Whole number from 0-100)");
+        System.out.println("Review of game:");
         int reviewIn = keyboard.nextInt();
         addingGame.setReview_Score(reviewIn);
+        //Eoin added in these three lines to take in image names as well as we added this parameter later.
+        System.out.println("Image_ID: ");
+        //Buffer as it wouldnt take final input
+        keyboard.nextLine();
+        String gameimage = keyboard.nextLine();
 
-        System.out.println("Image");
+        addingGame.setImage(gameimage);
 
         dao.insertGame(addingGame);
     }
-
+    //Menu made by Dovydas
     private static int mainMenu(Scanner keyboard) {
         int choice;
         System.out.println("+--------------------------------------------------------------------+");
@@ -190,6 +228,7 @@ public class Main{
         System.out.println("+--------------------------------------------------------------------+");
         return choice;
     }
+    //Print info made by Dovydas
     private static void printInfo(List<Game_Information> dao) {
         if( dao.isEmpty() )
             System.out.println("There is no Game anymore");

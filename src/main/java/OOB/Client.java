@@ -1,4 +1,4 @@
-//Eoin set up the server client connection. Code based on multithreading code we did in class.
+//Eoin set up the server client connection. Code based on multithread code we did in class.
 package OOB;
 import OOB.DTOs.Game_Information;
 import java.io.*;
@@ -9,6 +9,8 @@ import OOB.example.JSonConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 public class Client {
+    //Setting up variables for the input and output for the images.
+    private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
 
     //Main method
@@ -24,19 +26,18 @@ public class Client {
         try (   //New socket to connect to server
                 Socket socket = new Socket("localhost", 8888);
                 //get the socket's input and output streams, and wrap them in writer and readers
-                //out sets data to the server while in takes in data.
+                //out sents data to the server while in takes in data.
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         ) {
-            //Setting up input and output streams to receive image data.
+            //Setting up input and output streams to recieve image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
-            //Setting up variables for the input and output for the images.
-            DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             //Dovydas made the menu look nice
             Scanner consoleInput = new Scanner(System.in);
-            System.out.println("+--------------------------------------------------------------------+");
+            System.out.println("\n+--------------------------------------------------------------------+");
             System.out.print("""
                     Valid commands are:
                     Type 1 "+ID": To Display Entity by Id\s
@@ -46,7 +47,7 @@ public class Client {
                     Type 5 "+ID": To Get Game Image \s
                     Type 6: Exit the Client""");
             System.out.println("Please enter a command: ");
-            System.out.println("+--------------------------------------------------------------------+");
+            System.out.println("\n+--------------------------------------------------------------------+");
             String userRequest = consoleInput.nextLine();
 
             //Instantiate (create) a Gson Parser
@@ -54,14 +55,14 @@ public class Client {
 
             //A while loop which will run until turned off.
             while (true) {
-                out.println(userRequest); // write the request to socket
-                // process the answer returned by the server
-                //COMMAND 1 to Display Entity by ID
-                //If users request is 1
+                out.println(userRequest);
+                //Eoin wrote COMMAND 1
+                //COMMAND 1 to Display Entity by Id
+                //If users request starts with 1 runs this
                 if (userRequest.substring(0, 1).equals("1")) {
-                    String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
-                    //We then convert this JSON to a game info object
-                    //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
+                    //Assigning the JSON from the server to a String
+                    String JsonGameId = in.readLine();
+                    //Making a gameinformation object
                     Game_Information game = null;
                     //Parsing the JSON string into a gameInformation object.
                     try {
@@ -69,20 +70,23 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    assert game != null;
+                    //Displaying game
                     displaygame(game);
+                    //Eoin Wrote Command 2
+                    //Command 2 will display all games
                 } else if (userRequest.equals("2")) {
-                    String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
+                    // gets response from server and then we get JSON and put it into the string
+                    String JsonGameId = in.readLine();
+                    //Making a game information list
                     List<Game_Information> games = new ArrayList();
+                    //Parsing the Json data and assigning it to the games list
                     try {
                         games = gsonParser.fromJson(JsonGameId, List.class);
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    for(int i=0;i<games.size();i++)
-                    {
-                        displaygame(games.get(i));
-                    }
+                    //Printing games
+                        System.out.println(games);
                 }
 
                 //AUTHOR LIZA WROTE THIS SECTION OF CODE
@@ -101,7 +105,7 @@ public class Client {
                     newGame.setGame_franchise(consoleInput.nextLine());
                     System.out.println("Multiplayer");
                     newGame.setMultiplayer(Boolean.valueOf(consoleInput.nextLine()));
-                    System.out.println("Player count");
+                    System.out.println("Playercount");
                     newGame.setPlayer_amount(Integer.parseInt(consoleInput.nextLine()));
                     System.out.println("Review Score");
                     newGame.setReview_Score(Integer.parseInt(consoleInput.nextLine()));
@@ -124,22 +128,27 @@ public class Client {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
                     displaygame(game);
+                    //Command 4 Dovydas did this command
+                    //Runs this statement if request starts with 4
                 } else if (userRequest.substring(0, 1).equals("4")) {
-                    //String JsonGameId = in.readLine();  // gets response from server, and then we get JSON and put it into the string
-                    //We then convert this JSON to a game info object
-                    //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
-                    //Parsing the JSON string into a gameInformation object.
-
                     System.out.println(in.readLine());
+                    //Command 5 to request image from server
+                    //Eoin made this command
+                    //If users request starts with 5 runs this.
                 } else if (userRequest.substring(0, 1).equals("5")) {
+                    //Running method to recieve file. Setting up name of file.
                     receiveFile("images/Recieved_image_" + in.readLine() + "_received.jpg");
+                    //Command 6 To close client
+                    //Eoin wrote this
                 } else if (userRequest.equals("6")) {
+                    //Closing socket to close the client
                     socket.close();
                     System.out.println("Client connection closed");
                     break;
+                    //If request does not equal any of the above run else statement
                 } else {
                     System.out.println("Not a valid user request.");
-                    System.out.println("Current user request which resulted in error:" + userRequest);
+                    System.out.println("Current userrequest whicih resulted in error:" + userRequest);
                 }
                 //Taking in input
                 consoleInput = new Scanner(System.in);
@@ -156,14 +165,12 @@ public class Client {
         System.out.println("Exiting client, Server could still be running");
     }
 
-    //METHOD TO RECEIVE FILE
+    //METHOD TO RECEIVE FILE based on code we did in class
     private static void receiveFile(String fileName)
             throws Exception {
         int bytes = 0;
+        //Making a new fileoutputstream
         FileOutputStream fileOutputStream = new FileOutputStream(fileName);
-
-
-        // DataInputStream allows us to read Java primitive types from stream e.g. readLong()
         // read the size of the file in bytes (the file length)
         long size = dataInputStream.readLong();
         System.out.println("Server: file size in bytes = " + size);
@@ -178,11 +185,7 @@ public class Client {
         while (size > 0 &&
                 (bytes = dataInputStream.read(buffer, 0, (int) Math.min(buffer.length, size))) != -1) {
 
-            // above, we read a number of bytes from stream to fill the buffer (if there are enough remaining)
-            // - the number of bytes we must read is the smallest (min) of: the buffer length and the remaining size of the file
-            //- (remember that the last chunk of data read will usually not fill the buffer)
-
-            // Here we write the buffer data into the local file
+            //Writing the buffer data into a local file/
             fileOutputStream.write(buffer, 0, bytes);
 
             // reduce the 'size' by the number of bytes read in.
@@ -192,9 +195,9 @@ public class Client {
             System.out.print(size + ", ");
         }
 
+        //Sending message to say file is recieved
         System.out.println("File is Received");
-
-        System.out.println("Look in the images folder to see the transferred file: winton.png");
+        //Closing file outputstream
         fileOutputStream.close();
     }
 

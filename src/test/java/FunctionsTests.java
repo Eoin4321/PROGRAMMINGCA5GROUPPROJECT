@@ -14,8 +14,8 @@ public class FunctionsTests {
 
     DAO dao;
 
-    //Derrick wrote this line of code in class
-    //Before each test it runs this. This sets up our dao so we dont have to include it
+    //Derek wrote this line of code in class
+    //Before each test it runs this. This sets up our dao, so we don't have to include it
     //For each test
     @BeforeEach
     public void setUP()

@@ -34,13 +34,13 @@ public class Game_Information {
         Image_ID=image_id;
 
     }
-    //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter Entities
+    //PARTIAL CONSTRUCTOR FOR FUNCTION 6 to filter entitys
+    //I needed to create this partial constructor for game_information with only names as
+    //I need to compare game_information objects based on names.
 
     public Game_Information(String game_name) {
         Game_name = game_name;
     }
-
-
 
     //GETTERS
 
@@ -125,9 +125,10 @@ public class Game_Information {
 
     public void setImage(String image_ID) {
         Image_ID = image_ID;
+        Image_ID = image_ID;
     }
 
-    //toString Method - Basic
+    //TOSTRING
 
 
     @Override
