@@ -50,7 +50,6 @@ public class DAO {
     //METHODS FUNCTION 1
     //Author Eoin Hamill Created this entire function
     public List<Game_Information> getAllGames() throws SQLException{
-        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         List<Game_Information> game =new ArrayList();
         Statement state = connection.createStatement();

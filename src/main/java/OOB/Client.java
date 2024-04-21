@@ -8,11 +8,9 @@ import java.util.*;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
 import com.google.gson.reflect.TypeToken;
-import org.ietf.jgss.GSSManager;
+
 
 public class Client {
-    //Setting up variables for the input and output for the images.
-    private static DataOutputStream dataOutputStream = null;
     private static DataInputStream dataInputStream = null;
     //Main method
     public static void main(String[] args) {
@@ -29,28 +27,39 @@ public class Client {
                 //get the socket's input and output streams, and wrap them in writer and readers
                 //out sents data to the server while in takes in data.
                 PrintWriter out = new PrintWriter(socket.getOutputStream(), true);
-                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                BufferedReader in = new BufferedReader(new InputStreamReader(socket.getInputStream()))
         ) {
             //Setting up input and output streams to recieve image data.
             dataInputStream = new DataInputStream(socket.getInputStream());
-            dataOutputStream = new DataOutputStream( socket.getOutputStream());
+            //Setting up variables for the input and output for the images.
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
             Scanner consoleInput = new Scanner(System.in);
-            System.out.println("Valid commands are: Type 1 + ID Digit to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
-            System.out.println("Please enter a command: ");
-            String userRequest = consoleInput.nextLine();
+
 
             //Instantiate (create) a Gson Parser
             Gson gsonParser = new Gson();
 
             //A while loop which will run until turned off.
             while(true) {
+                System.out.println("+--------------------------------------------------------------------+");
+                System.out.print("""
+                    Valid commands are:
+                    Type 1: ID Digit to Display Entity by Id\s
+                    Type 2: Display all Entities
+                    Type 3: Add an Game to DataBase
+                    Type 4: Delete Game Within The Database\s
+                    Type 5: Get Game Image List\s
+                    Type 6: Exit the Server""");
+                System.out.println("Please enter a command: ");
+                String userRequest = consoleInput.nextLine();
+                System.out.println("+--------------------------------------------------------------------+");
+
                 out.println(userRequest); // write the request to socket
                 // process the answer returned by the server
                 //COMMAND 1 to Display Entity by Id
                 //If users request is 1
-                if (userRequest.substring(0, 1).equals("1")) {
+                if (userRequest.charAt(0) == '1') {
                     String JsonGameId = in.readLine();  // gets response from server and then we get JSON and put it into the string
                     //We then convert this JSON to a gameinfo object
                     //System.out.println("Client message: Response from server after \"1\" request: " + JsonGameId);
@@ -104,11 +113,7 @@ public class Client {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:"+userRequest);
                 }
-                //Taking in input
-                consoleInput = new Scanner(System.in);
-                System.out.println("Valid commands are: Type 1 to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
-                System.out.println("Please enter a command: ");
-                userRequest = consoleInput.nextLine();
+
             }
         } catch (IOException e) {
             System.out.println("Client message: IOException: " + e);
@@ -164,12 +169,13 @@ public class Client {
     public void displaygame(Game_Information game) {
 
 
-        System.out.println(String.format("%-9s%-20s%-10s%-15s%-15s%-15s%-12s%-15s%-10s",
-                "Game ID", "Name", "Console", "Publisher", "Developer", "Franchise", "Multiplayer", "Player Amount", "Review Score") +
-                "\n" +
-                "***************************************************************************************************************************\n" +
-                String.format("%-9d%-20s%-10s%-15s%-15s%-15s%-12b%-15d%-10.2f",
-                        game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score() ));
+        System.out.printf("+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
+                "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score |\n" +
+                "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n"
+                +
+                        "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f|\n" +
+                        "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+",
+                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
         System.out.println();
 
 

@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Scanner;
 import OOB.DAOs.DAO;
 import OOB.DTOs.Game_Information;
+import org.ietf.jgss.GSSManager;
+
 public class Main{
     public static void main(String[] args) throws SQLException {
         //Creating keyboard
@@ -17,6 +19,7 @@ public class Main{
         System.out.println("Welcome to the Video Game Database!!!");
         while(menu==true)
         {
+            System.out.println("+--------------------------------------------------------------------+");
             System.out.println("Please Select An Option" +
                     "\n1.Get all Entities" +
                     "\n2.Find and Display (a single) Entity by Key" +
@@ -27,12 +30,14 @@ public class Main{
                     "\n7.Convert List of Entities to a JSON String" +
                     "\n8.Convert a single Entity by Key as a JSON String");
             choice= keyboard.nextInt();
+            System.out.println("+--------------------------------------------------------------------+");
+
             //THis will run function 1
             //Author of Function 1 Eoin Hamill
             //Helped with by Dovydas. Helped troubleshoot why database was not connecting
             if(choice==1)
             {
-                System.out.println(dao.getAllGames());
+                printInfo(dao.getAllGames());
             }
             //Author EOIN HAMILL
             if(choice==2)
@@ -47,7 +52,7 @@ public class Main{
                 int id= keyboard.nextInt();
                 dao.deleteGameById(id);
             }
-            //AUTHOR EOIN HAMILL
+            //AUTHOR DOVYDAS JAKCUIUNAS
             if(choice==4)
             {
                 Game_Information addinggame = new Game_Information();
@@ -71,6 +76,7 @@ public class Main{
                 addinggame.setImage(keyboard.next());
                 dao.insertGame(addinggame);
             }
+            //AUTHOR DOVYDAS JAKCUIUNAS
             if(choice==5)
             {
                 System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
@@ -103,6 +109,7 @@ public class Main{
                 Comparator<Game_Information> gamenameComparator = Comparator.comparing(Game_Information::getGame_name);
                 System.out.println(dao.gameInformationBasedOnName(gamenameComparator));
             }
+            //AUTHOR EOIN HAMILL
             if(choice==7)
             {
                 List<Game_Information> game = dao.getAllGames();
@@ -110,6 +117,7 @@ public class Main{
                 System.out.println(gameJson);
 
             }
+            //AUTHOR EOIN HAMILL
             if(choice==8)
             {
                 System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
@@ -118,6 +126,15 @@ public class Main{
                 String gamegameJson = JSonConverter.gameToJson(gameJson);
                 System.out.println(gamegameJson);
             }
+        }
+    }
+
+    private static void printInfo(List<Game_Information> gameInfo) {
+        if( gameInfo.isEmpty() )
+            System.out.println("There is no Game anymore");
+        else {
+            for (Game_Information Game : gameInfo)
+                System.out.println("Game: " + Game.toString());
         }
     }
 }
