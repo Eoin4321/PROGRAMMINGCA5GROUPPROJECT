@@ -48,7 +48,7 @@ public class DAO {
     }
 
     //METHODS FUNCTION 1
-    //Author Eoin Hamill Created this entire function
+    //Author Eoin Hamill wrote this code
     public List<Game_Information> getAllGames() throws SQLException{
         Connection connection = getConnection();
         List<Game_Information> game =new ArrayList();
@@ -74,7 +74,7 @@ public class DAO {
         return game;
     }
 
-    //Author Eoin Hamill created this entire function
+    //Author Eoin Hamill wrote this code
     public Game_Information getGameById(int id) throws SQLException {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
@@ -97,7 +97,7 @@ public class DAO {
         return game;
     }
 
-    //AUTHOR Eoin Hamill created this entire function
+    //AUTHOR Eoin Hamill wrote this code
     public void deleteGameById(int id) throws SQLException {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
@@ -106,12 +106,13 @@ public class DAO {
 
     }
 
-    //AUTHOR Eoin Hamill created this entire function
+    //AUTHOR Eoin Hamill wrote this code
+    //Liza added in the generated key code
+    //method to add a game
     public void insertGame(Game_Information game) throws SQLException {
         DAO dao =DAO.getInstance();
         Connection connection = getConnection();
-
-        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score) Values(?,?,?,?,?,?,?,?)");
+        PreparedStatement insertStatement = connection.prepareStatement("INSERT INTO gameinformation (Game_name, Game_console,Game_publisher,Game_developer,Game_franchise,Multiplayer,Player_amount,Review_Score,Image_ID) Values(?,?,?,?,?,?,?,?,?)", Statement.RETURN_GENERATED_KEYS);
         insertStatement.setString(1, game.getGame_name());
         insertStatement.setString(2, game.getGame_console());
         insertStatement.setString(3, game.getGame_publisher());
@@ -120,6 +121,13 @@ public class DAO {
         insertStatement.setBoolean(6, game.getMultiplayer());
         insertStatement.setInt(7, game.getPlayer_amount());
         insertStatement.setDouble(8, game.getReview_Score());
+        insertStatement.setString(9, game.getImage());
+
+        ResultSet results = insertStatement.getGeneratedKeys();
+        if (results.next())
+        {
+            game.setGameId(results.getInt(1));
+        }
 
         insertStatement.executeUpdate();
     }
@@ -130,7 +138,7 @@ public class DAO {
         Connection connection = getConnection();
 
         PreparedStatement insertStatement = connection.prepareStatement("UPDATE gameinformation \n" +
-                "SET Game_name =?, Game_console=?,Game_developer=?,Game_franchise=?,Game_publisher=?,Multiplayer=?,Player_amount=?,Review_Score=?\n" +
+                "SET Game_name =?, Game_console=?,Game_developer=?,Game_franchise=?,Game_publisher=?,Multiplayer=?,Player_amount=?,Review_Score=?,Image_ID=?\n" +
                 "WHERE GameID =?");
         insertStatement.setString(1, game.getGame_name());
         insertStatement.setString(2, game.getGame_console());
@@ -140,7 +148,9 @@ public class DAO {
         insertStatement.setBoolean(6, game.getMultiplayer());
         insertStatement.setInt(7, game.getPlayer_amount());
         insertStatement.setDouble(8, game.getReview_Score());
-        insertStatement.setInt(9,id);
+        insertStatement.setString(9, game.getImage());
+        insertStatement.setInt(10,id);
+
 
         insertStatement.executeUpdate();
     }
@@ -169,6 +179,7 @@ public class DAO {
             addinggame.setMultiplayer(result.getBoolean("Multiplayer"));
             addinggame.setPlayer_amount(result.getInt("Player_amount"));
             addinggame.setReview_Score(result.getInt("Review_Score"));
+            addinggame.setImage(result.getString("Image_ID"));
 
             if(gamenameComparator.compare(addinggame, new Game_Information(filter))==0)
             {

@@ -69,7 +69,7 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    System.out.println("Your game is " + game);
+                    displaygame(game);
                 }
 
                 else if(userRequest.equals("2"))
@@ -81,7 +81,7 @@ public class Client {
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    System.out.println(games);
+                    printInfo(games);
                 }
 
                 //AUTHOR LIZA WROTE THIS SECTION OF CODE
@@ -213,12 +213,22 @@ public class Client {
     //Eoin added in Image parameters.
     public void displaygame(Game_Information game) {
         System.out.printf("+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
-                        "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score |\n" +
+                        "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score | Image_ID \\n" +
                         "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n"
                         +
-                        "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f|\n" +
+                        "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f| %-18s|\n" +
                         "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+",
-                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
+                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score(),game.getImage());
+    }
+
+    //DOVYDAS MADE THIS
+    private static void printInfo(List<Game_Information> gameInfo) {
+        if( gameInfo.isEmpty() )
+            System.out.println("There is no Game anymore");
+        else {
+            for (Game_Information Game : gameInfo)
+                System.out.println("Game: " + Game.toString());
+        }
     }
 
 
