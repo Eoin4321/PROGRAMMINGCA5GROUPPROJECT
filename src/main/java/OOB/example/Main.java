@@ -39,20 +39,20 @@ public class Main{
             {
                 printInfo(dao.getAllGames());
             }
-            //Author EOIN HAMILL
+            //Author EOIN HAMILL and Dovydas
             if(choice==2)
             {
                 System.out.println("TYPE IN ID YOU WANT TO SEARCH FOR ");
                 int id= keyboard.nextInt();
                 System.out.println(dao.getGameById(id));
             }
-            //AUTHOR EOIN HAMILL
+            //AUTHOR EOIN HAMILL and Dovydas
             if(choice==3) {
                 System.out.println("TYPE IN ID YOU WANT TO DELETE ");
                 int id= keyboard.nextInt();
                 dao.deleteGameById(id);
             }
-            //AUTHOR DOVYDAS JAKCUIUNAS
+            //AUTHOR Eoin and DOVYDAS JAKCUIUNAS
             if(choice==4)
             {
                 Game_Information addinggame = new Game_Information();
@@ -76,7 +76,7 @@ public class Main{
                 addinggame.setImage(keyboard.next());
                 dao.insertGame(addinggame);
             }
-            //AUTHOR DOVYDAS JAKCUIUNAS
+            //AUTHOR Eoin and DOVYDAS JAKCUIUNAS
             if(choice==5)
             {
                 System.out.println("TYPE IN ID YOU WANT TO CHANGE ");
@@ -129,6 +129,7 @@ public class Main{
         }
     }
 
+    //DOVYDAS MADE THIS
     private static void printInfo(List<Game_Information> gameInfo) {
         if( gameInfo.isEmpty() )
             System.out.println("There is no Game anymore");
@@ -137,4 +138,5 @@ public class Main{
                 System.out.println("Game: " + Game.toString());
         }
     }
+
 }

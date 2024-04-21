@@ -34,7 +34,9 @@ public class Client {
             dataOutputStream = new DataOutputStream( socket.getOutputStream());
             System.out.println("Client message: The Client is running and has connected to the server");
             //Setting up to take input from user.
+            //Dovydas made the menu look nice
             Scanner consoleInput = new Scanner(System.in);
+            System.out.println("+--------------------------------------------------------------------+");
             System.out.print("""
                     Valid commands are:
                     Type 1 "+ID": To Display Entity by Id\s
@@ -44,6 +46,7 @@ public class Client {
                     Type 5 "+ID": To Get Game Image \s
                     Type 6: Exit the Client""");
             System.out.println("Please enter a command: ");
+            System.out.println("+--------------------------------------------------------------------+");
             String userRequest = consoleInput.nextLine();
 
             //Instantiate (create) a Gson Parser
@@ -209,18 +212,13 @@ public class Client {
     //METHOD TO DISPLAY GAME MADE BY DOVYDAS
     //Eoin added in Image parameters.
     public void displaygame(Game_Information game) {
-        String headers = "Game ID, Name ,Console , Publisher, Developer, Franchise, Multiplayer, Player Amount, Review Score";
-        System.out.println(headers);
-//        System.out.println("");
-//        System.out.println("****************************************************************************************************");
-        for(int i = 0; i < headers.length(); i++){
-            System.out.print("*");
-        }
-        System.out.println();
-        //System.out.println(game.getGameId() + game.getGame_name()+ game.getGame_console()+game.getGame_publisher()+game.getGame_developer()+game.getGame_franchise()+game.getMultiplayer()+game.getPlayer_amount()+ game.getReview_Score());
-        System.out.printf("%d\t%s\t%s\t%s\t%s\t%s\t%s\t%d20\t%.2f\t%s",game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score(),game.getImage());
-
-
+        System.out.printf("+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
+                        "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score |\n" +
+                        "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n"
+                        +
+                        "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f|\n" +
+                        "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+",
+                game.getGameId(),game.getGame_name(),game.getGame_console(),game.getGame_publisher(),game.getGame_developer(),game.getGame_franchise(),game.getMultiplayer(),game.getPlayer_amount(),game.getReview_Score());
     }
 
 
