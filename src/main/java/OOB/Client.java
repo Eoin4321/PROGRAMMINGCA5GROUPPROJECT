@@ -37,7 +37,7 @@ public class Client {
             //Setting up to take input from user.
             //Dovydas made the menu look nice
             Scanner consoleInput = new Scanner(System.in);
-            System.out.println("+--------------------------------------------------------------------+");
+            System.out.println("\n+--------------------------------------------------------------------+");
             System.out.print("""
                     Valid commands are:
                     Type 1 "+ID": To Display Entity by Id\s
@@ -47,7 +47,7 @@ public class Client {
                     Type 5 "+ID": To Get Game Image \s
                     Type 6: Exit the Client""");
             System.out.println("Please enter a command: ");
-            System.out.println("+--------------------------------------------------------------------+");
+            System.out.println("\n+--------------------------------------------------------------------+");
             String userRequest = consoleInput.nextLine();
 
             //Instantiate (create) a Gson Parser

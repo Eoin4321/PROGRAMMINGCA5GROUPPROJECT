@@ -136,7 +136,9 @@ public class Main{
         System.out.println("Playercount");
         addinggame.setPlayer_amount(Integer.parseInt(String.valueOf(keyboard.nextInt())));
         System.out.println("Image");
-        addinggame.setImage(keyboard.next());
+        //Buffer as it wouldnt take final input
+        keyboard.nextLine();
+        addinggame.setImage(keyboard.nextLine());
         //Sending game information to the updategameinfo method which will update based on changes requested.
         dao.updateGameInfo(id,addinggame);
     }
@@ -194,12 +196,15 @@ public class Main{
         int playerIn = keyboard.nextInt();
         addingGame.setPlayer_amount(playerIn);
 
-        System.out.println("Review of game: (Whole number from 0-100)");
+        System.out.println("Review of game:");
         int reviewIn = keyboard.nextInt();
         addingGame.setReview_Score(reviewIn);
         //Eoin added in these three lines to take in image names as well as we added this parameter later.
         System.out.println("Image_ID: ");
+        //Buffer as it wouldnt take final input
+        keyboard.nextLine();
         String gameimage = keyboard.nextLine();
+
         addingGame.setImage(gameimage);
 
         dao.insertGame(addingGame);
