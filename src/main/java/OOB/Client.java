@@ -2,12 +2,15 @@
 package OOB;
 import OOB.DTOs.Game_Information;
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.Socket;
 import java.util.*;
 
 import OOB.example.JSonConverter;
 import com.google.gson.Gson;
 import com.google.gson.JsonSyntaxException;
+import com.google.gson.reflect.TypeToken;
+
 public class Client {
     //Setting up variables for the input and output for the images.
     private static DataOutputStream dataOutputStream = null;
@@ -37,8 +40,15 @@ public class Client {
             //Setting up to take input from user.
             //Dovydas made the menu look nice
             Scanner consoleInput = new Scanner(System.in);
-            System.out.println("\n+--------------------------------------------------------------------+");
-            System.out.print("""
+
+
+            //Instantiate (create) a Gson Parser
+            Gson gsonParser = new Gson();
+
+            //A while loop which will run until turned off.
+            while (true) {
+                System.out.println("\n+--------------------------------------------------------------------+");
+                System.out.print("""
                     Valid commands are:
                     Type 1 "+ID": To Display Entity by Id\s
                     Type 2: Display all Entities
@@ -46,15 +56,11 @@ public class Client {
                     Type 4: Delete Game Within The Database\s
                     Type 5 "+ID": To Get Game Image \s
                     Type 6: Exit the Client""");
-            System.out.println("Please enter a command: ");
-            System.out.println("\n+--------------------------------------------------------------------+");
-            String userRequest = consoleInput.nextLine();
+                System.out.println("\nPlease enter a command: ");
+                String userRequest = consoleInput.nextLine();
+                System.out.println("+--------------------------------------------------------------------+");
 
-            //Instantiate (create) a Gson Parser
-            Gson gsonParser = new Gson();
 
-            //A while loop which will run until turned off.
-            while (true) {
                 out.println(userRequest);
                 //Eoin wrote COMMAND 1
                 //COMMAND 1 to Display Entity by Id
@@ -74,19 +80,21 @@ public class Client {
                     displaygame(game);
                     //Eoin Wrote Command 2
                     //Command 2 will display all games
-                } else if (userRequest.equals("2")) {
+                }
+                else if (userRequest.equals("2")) {
                     // gets response from server and then we get JSON and put it into the string
                     String JsonGameId = in.readLine();
                     //Making a game information list
                     List<Game_Information> games = new ArrayList();
                     //Parsing the Json data and assigning it to the games list
                     try {
-                        games = gsonParser.fromJson(JsonGameId, List.class);
+                        Type collectionClient = new TypeToken<Collection<Game_Information>>(){}.getType();      //Created type object of Game_Information Collections- Making the empty variable a base of Game_Information
+                        Collection<Game_Information> game = gsonParser.fromJson(JsonGameId, collectionClient);  //Filling in the Collection with allocated variables from the server
+                        displayGameList((List<Game_Information>) game);
                     } catch (JsonSyntaxException ex) {
                         System.out.println("Jason syntax error encountered. " + ex);
                     }
-                    //Printing games
-                        System.out.println(games);
+
                 }
 
                 //AUTHOR LIZA WROTE THIS SECTION OF CODE
@@ -130,31 +138,31 @@ public class Client {
                     displaygame(game);
                     //Command 4 Dovydas did this command
                     //Runs this statement if request starts with 4
-                } else if (userRequest.substring(0, 1).equals("4")) {
+                }
+                else if (userRequest.substring(0, 1).equals("4")) {
                     System.out.println(in.readLine());
                     //Command 5 to request image from server
                     //Eoin made this command
                     //If users request starts with 5 runs this.
-                } else if (userRequest.substring(0, 1).equals("5")) {
+                }
+                else if (userRequest.substring(0, 1).equals("5")) {
                     //Running method to recieve file. Setting up name of file.
                     receiveFile("images/Recieved_image_" + in.readLine() + "_received.jpg");
                     //Command 6 To close client
                     //Eoin wrote this
-                } else if (userRequest.equals("6")) {
+                }
+                else if (userRequest.equals("6")) {
                     //Closing socket to close the client
                     socket.close();
                     System.out.println("Client connection closed");
                     break;
                     //If request does not equal any of the above run else statement
-                } else {
+                }
+                else {
                     System.out.println("Not a valid user request.");
                     System.out.println("Current userrequest whicih resulted in error:" + userRequest);
                 }
-                //Taking in input
-                consoleInput = new Scanner(System.in);
-                System.out.println("Valid commands are: Type 1 to Display Entity by Id ,Type 2 to Display all Entities,Type 3 to “Add an Entity");
-                System.out.println("Please enter a command: ");
-                userRequest = consoleInput.nextLine();
+
             }
         } catch (IOException e) {
             System.out.println("Client message: IOException: " + e);
@@ -204,8 +212,8 @@ public class Client {
     //METHOD TO DISPLAY GAME MADE BY DOVYDAS
     //Eoin added in Image parameters.
     public void displaygame(Game_Information game) {
-        System.out.printf("+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
-                        "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score | Image_ID \\n" +
+        System.out.printf("\n+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n" +
+                        "| Game ID |        Name        | Console  |    Publisher    |    Developer    |    Franchise    | Multiplayer| Player Amount | Review Score | Image_ID \n" +
                         "+---------+--------------------+----------+-----------------+-----------------+-----------------+------------+---------------+--------------+\n"
                         +
                         "| %-7d| %-18s| %-9s| %-16s| %-16s| %-16s| %-10b| %-13s| %-12.2f| %-18s|\n" +
@@ -213,15 +221,15 @@ public class Client {
                 game.getGameId(), game.getGame_name(), game.getGame_console(), game.getGame_publisher(), game.getGame_developer(), game.getGame_franchise(), game.getMultiplayer(), game.getPlayer_amount(), game.getReview_Score(), game.getImage());
     }
 
-//    //DOVYDAS MADE THIS
-//    private static void printInfo(List<Game_Information> dao) {
-//        if (dao.isEmpty())
-//            System.out.println("There is no Game anymore");
-//        else {
-//            for (Game_Information Game : dao)
-//                System.out.println("Game: " + Game.toString());
-//        }
-//
-//
-//    }
+
+    public void displayGameList(List<Game_Information> game) {
+
+        for (int i = 0; i < game.size(); i++) {
+            displaygame(game.get(i));
+        }
+
+
+
+    }
+
 }

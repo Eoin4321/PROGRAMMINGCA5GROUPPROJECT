@@ -151,6 +151,7 @@ public class DAO {
     //This method updates game information.
     //Takes in ID for game you want to update and new information which will be used to update.
     public void updateGameInfo(int id, Game_Information game) throws SQLException {
+        DAO dao =DAO.getInstance();
         Connection connection = getConnection();
         //Creating statement with ? parameters which I then replace with the information taken in from game object. I use the Where gameID= to update the particular game the user requested.
         PreparedStatement insertStatement = connection.prepareStatement("UPDATE gameinformation \n" +
@@ -166,7 +167,7 @@ public class DAO {
         insertStatement.setInt(7, game.getPlayer_amount());
         insertStatement.setDouble(8, game.getReview_Score());
         insertStatement.setString(9, game.getImage());
-
+        insertStatement.setInt(10,id);
 
         //Running statement
         insertStatement.executeUpdate();

@@ -92,11 +92,17 @@ public class Main{
     //This method converts a list of games to JSON and outputs that JSON which is assigned to a string
     private static void gameListToJson(DAO dao) throws SQLException {
         //Setting up a list of games and call the get all games method to fill the list
-        List<Game_Information> game = dao.getAllGames();
+        List<Game_Information> gameList = dao.getAllGames();
         //Assign the String to a JSON which I put my lists of games into which returns a JSON
-        String gameJson = JSonConverter.gameListToJson(game);
-        //Outputting Json
-        System.out.println(gameJson);
+        for (Game_Information game : gameList) {
+            //Convert each game to JSON
+            String gameJson = JSonConverter.gameToJson(game);
+            //Print the JSON representation of each game on a new line
+            System.out.println(gameJson);
+        }
+
+
+
     }
 
     //EOIN HAMILL wrote this code.
@@ -142,6 +148,7 @@ public class Main{
         //Sending game information to the updategameinfo method which will update based on changes requested.
         dao.updateGameInfo(id,addinggame);
     }
+
 
     //Author Eoin and Dovydas
     //This method searchs for a game and displays it based on ID
